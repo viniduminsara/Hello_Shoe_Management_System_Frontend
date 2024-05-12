@@ -1,0 +1,23 @@
+{
+  "name": "helloshoesfrontend",
+  "private": true,
+  "author": "Vinidu Minsara",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.19",
+    "daisyui": "^4.11.1",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.3",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "apexcharts": "^3.49.1",
+    "jquery": "^3.7.1"
+  }
+}
