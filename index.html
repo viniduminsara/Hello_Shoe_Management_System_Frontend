@@ -649,19 +649,35 @@
                                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
                             </form>
                             <h1 class="text-2xl font-bold mb-2">Add Customer</h1>
-                            <input id="customer_name" type="text" placeholder="Name"
-                                   class="input input-bordered input-primary w-full max-w-xs my-3"/>
-                            <input id="customer_address" type="text" placeholder="Address"
-                                   class="input input-bordered input-primary w-full max-w-xs my-3"/>
-                            <input id="customer_contact" type="text" placeholder="Contact"
-                                   class="input input-bordered input-primary w-full max-w-xs my-3"/>
-                            <input id="customer_email" type="text" placeholder="Email"
-                                   class="input input-bordered input-primary w-full max-w-xs my-3"/>
-                            <input id="customer_dob" type="date" placeholder="DOB"
-                                   class="input input-bordered input-primary w-full max-w-xs my-3"/>
-                            <div>
+                            <div class="my-4">
+                                <input id="customer_name" type="text" placeholder="Name"
+                                       class="input input-bordered w-full max-w-xs"/>
+                                <p class="text-error text-xs mt-2" id="customer_name_error"></p>
+                            </div>
+                            <div class="my-4">
+                                <input id="customer_address" type="text" placeholder="Address"
+                                       class="input input-bordered w-full max-w-xs"/>
+                                <p class="text-error text-xs mt-2" id="customer_address_error"></p>
+                            </div>
+                            <div class="my-4">
+                                <input id="customer_contact" type="text" placeholder="Contact"
+                                       class="input input-bordered w-full max-w-xs"/>
+                                <p class="text-error text-xs mt-2" id="customer_contact_error"></p>
+                            </div>
+                            <div class="my-4">
+                                <input id="customer_email" type="text" placeholder="Email"
+                                       class="input input-bordered w-full max-w-xs"/>
+                                <p class="text-error text-xs mt-2" id="customer_email_error"></p>
+                            </div >
+                            <div class="my-4">
+                                <input id="customer_dob" type="date" placeholder="DOB"
+                                       class="input input-bordered w-full max-w-xs"/>
+                                <p class="text-error text-xs mt-2" id="customer_dob_error"></p>
+                            </div>
+                            <div class="my-4">
                                 <input class="join-item btn" type="radio" name="customer_gender" aria-label="Male"/>
                                 <input class="join-item btn" type="radio" name="customer_gender" aria-label="Female"/>
+                                <p class="text-error text-xs mt-2" id="customer_gender_error"></p>
                             </div>
                             <div class="flex justify-end">
                                 <button id="saveBtn" type="button" class="btn btn-primary">Save</button>
@@ -748,8 +764,6 @@
                     </table>
                 </div>
             </section>
-
-            <div id="toastContainer" class="fixed bottom-4 right-4 z-50"></div>
         </main>
 
 

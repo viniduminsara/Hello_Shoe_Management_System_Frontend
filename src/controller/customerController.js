@@ -1,36 +1,55 @@
 import validator from "validator/es";
 
 $(document).ready(function() {
+
+    const customerName = $('#customer_name');
+    const customerAddress = $('#customer_address');
+    const customerContact = $('#customer_contact');
+    const customerEmail = $('#customer_email');
+    const customerDob = $('#customer_dob');
+
     // Event delegation for dynamically added button
     $('#saveBtn').on('click', function() {
-        let name = $('#customer_name').val();
-        let address = $('#customer_address').val();
-        let contact = $('#customer_contact').val();
-        let email = $('#customer_email').val();
-        let dob = $('#customer_dob').val();
-        let gender = $('input[name="customer_gender"]:checked').length > 0 ? $('input[name="customer_gender"]:checked').attr('aria-label') : '';
+        let nameVal = customerName.val();
+        let addressVal = customerAddress.val();
+        let contactVal = customerContact.val();
+        let emailVal = customerEmail.val();
+        let dobVal = customerDob.val();
+        let genderVal = $('input[name="customer_gender"]:checked').length > 0 ? $('input[name="customer_gender"]:checked').attr('aria-label') : '';
+
+        removeCustomerValidationError();
 
         // Validation checks
         let errors = [];
 
-        if (!validator.isLength(name, { min: 2, max: 50 })) {
+        if (!validator.isLength(nameVal, { min: 2, max: 50 })) {
             errors.push('Name must be between 2 and 50 characters');
-            showToast('Name must be between 2 and 50 characters');
+            $('#customer_name_error').text('Name must be between 2 and 50 characters');
+            customerName.addClass('input-error');
         }
-        if (!validator.isEmail(email)) {
+        if (!validator.isEmail(emailVal)) {
             errors.push('Invalid email format');
+            $('#customer_email_error').text('Invalid email format');
+            customerEmail.addClass('input-error');
         }
-        if (!validator.isLength(address, { min: 5, max: 100 })) {
+        if (!validator.isLength(addressVal, { min: 5, max: 100 })) {
             errors.push('Address must be between 5 and 100 characters');
+            $('#customer_address_error').text('Address must be between 5 and 100 characters');
+            customerAddress.addClass('input-error');
         }
-        if (!validator.isMobilePhone(contact, 'any', { strictMode: false })) {
+        if (!validator.isMobilePhone(contactVal, 'any', { strictMode: false })) {
             errors.push('Invalid contact number');
+            $('#customer_contact_error').text('Invalid contact number');
+            customerContact.addClass('input-error');
         }
-        if (!validator.isDate(dob)){
+        if (!validator.isDate(dobVal)){
             errors.push('Invalid dob');
+            $('#customer_dob_error').text('Invalid dob');
+            customerDob.addClass('input-error');
         }
-        if (validator.isEmpty(gender)){
+        if (validator.isEmpty(genderVal)){
             errors.push('Please select gender');
+            $('#customer_gender_error').text('Please select gender');
         }
 
         if (errors.length > 0) {
@@ -38,32 +57,22 @@ $(document).ready(function() {
             return;
         }
 
-        console.log('Name:', name);
-        console.log('Address:', address);
-        console.log('Contact:', contact);
-        console.log('Email:', email);
-        console.log('DOB:', dob);
-        console.log('Gender:', gender);
+        console.log('Name:', nameVal);
+        console.log('Address:', addressVal);
+        console.log('Contact:', contactVal);
+        console.log('Email:', emailVal);
+        console.log('DOB:', dobVal);
+        console.log('Gender:', genderVal);
     });
+
+    function removeCustomerValidationError(){
+        const inputs = [customerName, customerAddress, customerContact, customerEmail, customerEmail, customerDob];
+        const errorLabels = [$('#customer_name_error'), $('#customer_email_error'), $('#customer_address_error'), $('#customer_contact_error'), $('#customer_dob_error'), $('#customer_gender_error')];
+
+        inputs.forEach(input => input.removeClass('input-error'));
+        errorLabels.forEach(errorLabel => errorLabel.text(''));
+    }
 });
 
-function showToast(message, duration = 3000) {
-    // Create toast element
-    const toast = document.createElement('div');
-    toast.className = 'toast';
 
-    const alert = document.createElement('div');
-    alert.className = 'alert alert-info';
-    alert.textContent = message;
-    toast.appendChild(alert);
-
-    // Append toast to container
-    const toastContainer = document.getElementById('toastContainer');
-    toastContainer.appendChild(toast);
-
-    // // Automatically remove toast after duration
-    setTimeout(() => {
-        toast.remove();
-    }, duration);
-}
 
