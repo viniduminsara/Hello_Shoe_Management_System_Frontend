@@ -1,4 +1,6 @@
 import validator from "validator/es";
+import CustomerModel from "../model/CustomerModel.js";
+import {saveCustomer} from "../api/Customer.js";
 
 $(document).ready(function() {
 
@@ -8,12 +10,16 @@ $(document).ready(function() {
     const customerEmail = $('#customer_email');
     const customerDob = $('#customer_dob');
 
+    function loadAllCustomers(){
+
+    }
+
     // Event delegation for dynamically added button
     $('#saveBtn').on('click', function() {
-        let nameVal = customerName.val();
-        let addressVal = customerAddress.val();
-        let contactVal = customerContact.val();
-        let emailVal = customerEmail.val();
+        let nameVal = customerName.val().trim();
+        let addressVal = customerAddress.val().trim();
+        let contactVal = customerContact.val().trim();
+        let emailVal = customerEmail.val().trim();
         let dobVal = customerDob.val();
         let genderVal = $('input[name="customer_gender"]:checked').length > 0 ? $('input[name="customer_gender"]:checked').attr('aria-label') : '';
 
@@ -53,16 +59,19 @@ $(document).ready(function() {
         }
 
         if (errors.length > 0) {
-            console.error('Validation errors:', errors);
             return;
         }
 
-        console.log('Name:', nameVal);
-        console.log('Address:', addressVal);
-        console.log('Contact:', contactVal);
-        console.log('Email:', emailVal);
-        console.log('DOB:', dobVal);
-        console.log('Gender:', genderVal);
+        const customer = new CustomerModel(nameVal, genderVal.toUpperCase(), dobVal, addressVal, contactVal, emailVal);
+
+        saveCustomer(customer,
+            function() {
+                console.log('Customer saved:');
+            },
+            function(error) {
+                console.error('Error saving customer:', error);
+            }
+        );
     });
 
     function removeCustomerValidationError(){
