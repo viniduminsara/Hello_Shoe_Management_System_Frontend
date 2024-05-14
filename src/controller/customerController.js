@@ -50,7 +50,7 @@ function loadAllCustomers() {
 loadAllCustomers();
 
 // Event delegation for dynamically added button
-$('#saveBtn').on('click', function () {
+$('#customerSaveBtn').on('click', function () {
     let nameVal = customerName.val().trim();
     let addressVal = customerAddress.val().trim();
     let contactVal = customerContact.val().trim();
@@ -109,7 +109,7 @@ $('#saveBtn').on('click', function () {
     );
 });
 
-function editCustomerModal(customerId) {
+function changeToEditCustomerModal(customerId) {
 
     getCustomerById(customerId,
         function (customer) {
@@ -128,7 +128,9 @@ function editCustomerModal(customerId) {
 
 $(document).on('click', '.edit-customer-btn', function () {
     let customerId = $(this).attr('data-customer-id');
-    editCustomerModal(customerId);
+    $('#new_customer_form .modal-box h1').text('Edit Customer');
+    $('#customerSaveBtn').text('Update');
+    changeToEditCustomerModal(customerId);
 });
 
 function removeCustomerValidationError() {
@@ -141,6 +143,9 @@ function removeCustomerValidationError() {
 
 
 $(document).on('click', '#add_customer_btn',function() {
+    $('#new_customer_form .modal-box h1').text('Add Customer');
+    $('#customerSaveBtn').text('Save');
+
     customerName.val('');
     customerEmail.val('');
     customerContact.val('');
