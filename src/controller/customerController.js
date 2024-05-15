@@ -8,6 +8,8 @@ const customerAddress = $('#customer_address');
 const customerContact = $('#customer_contact');
 const customerEmail = $('#customer_email');
 const customerDob = $('#customer_dob');
+const customerMale = $('#customer_male');
+const customerFemale = $('#customer_female');
 
 let currentCustomerId;
 
@@ -108,9 +110,11 @@ $('#customerSaveBtn').on('click', function () {
             function () {
                 loadAllCustomers();
                 new_customer_form.close();
+                showToast('success','Customer saved successfully!');
             },
             function (error) {
                 console.error('Error saving customer:', error);
+                showToast('error','Error saving customer!');
             }
         );
     }else {
@@ -118,10 +122,11 @@ $('#customerSaveBtn').on('click', function () {
             function () {
                 loadAllCustomers();
                 new_customer_form.close();
-                startWindToast('Customer Updated', 'customer updated successfully', 'error', 3, 'right')
+                showToast('success','Customer updated successfully!');
             },
             function (error) {
                 console.error('Error updating customer:', error);
+                showToast('error','Error updating customer!');
             }
         )
     }
@@ -140,6 +145,14 @@ function changeToEditCustomerModal(customerId) {
             customerContact.val(customer.contact);
             customerAddress.val(customer.address);
             customerDob.val(customer.dob);
+            console.log(customer.gender)
+            if (customer.gender === 'FEMALE'){
+                customerMale.removeAttr('checked');
+                customerFemale.attr('checked', 'checked');
+            }else if (customer.gender === 'MALE'){
+                customerFemale.removeAttr('checked');
+                customerMale.attr('checked', 'checked');
+            }
         },
         function (error) {
             console.error('Error fetching customer:', error);
