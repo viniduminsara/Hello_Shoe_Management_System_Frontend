@@ -1,12 +1,14 @@
 import validator from "validator/es";
 import CustomerModel from "../model/CustomerModel.js";
-import {getAllCustomers, getCustomerById, saveCustomer} from "../api/Customer.js";
+import {getAllCustomers, getCustomerById, saveCustomer, updateCustomer} from "../api/Customer.js";
 
 const customerName = $('#customer_name');
 const customerAddress = $('#customer_address');
 const customerContact = $('#customer_contact');
 const customerEmail = $('#customer_email');
 const customerDob = $('#customer_dob');
+
+let currentCustomerId;
 
 function loadAllCustomers() {
     getAllCustomers(
@@ -21,7 +23,7 @@ function loadAllCustomers() {
                             <td>${customer.contact}</td>  
                             <td>${customer.address}</td>  
                             <td>${customer.joinedDate}</td>  
-                            <td class="flex">
+                            <td class="flex justify-around">
                                 <button class="btn btn-square btn-sm text-primary mr-2 edit-customer-btn"
                                         data-customer-id="${customer.customerId}">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -99,14 +101,28 @@ $('#customerSaveBtn').on('click', function () {
 
     const customer = new CustomerModel(nameVal, genderVal.toUpperCase(), dobVal, addressVal, contactVal, emailVal);
 
-    saveCustomer(customer,
-        function () {
-            loadAllCustomers();
-        },
-        function (error) {
-            console.error('Error saving customer:', error);
-        }
-    );
+    if ($('#customerSaveBtn').text() === 'Save'){
+        saveCustomer(customer,
+            function () {
+                loadAllCustomers();
+                new_customer_form.close();
+            },
+            function (error) {
+                console.error('Error saving customer:', error);
+            }
+        );
+    }else {
+        updateCustomer(currentCustomerId, customer,
+            function () {
+                loadAllCustomers();
+                new_customer_form.close();
+            },
+            function (error) {
+                console.error('Error updating customer:', error);
+            }
+        )
+    }
+
 });
 
 function changeToEditCustomerModal(customerId) {
@@ -114,14 +130,16 @@ function changeToEditCustomerModal(customerId) {
     getCustomerById(customerId,
         function (customer) {
             new_customer_form.showModal();
+            currentCustomerId = customer.customerId;
 
             customerName.val(customer.name);
             customerEmail.val(customer.email);
             customerContact.val(customer.contact);
             customerAddress.val(customer.address);
+            customerDob.val(customer.dob);
         },
         function (error) {
-            console.error('Error saving customer:', error);
+            console.error('Error fetching customer:', error);
         }
     );
 }
@@ -150,6 +168,7 @@ $(document).on('click', '#add_customer_btn',function() {
     customerEmail.val('');
     customerContact.val('');
     customerAddress.val('');
+    customerDob.val('');
 
     new_customer_form.showModal()
 })

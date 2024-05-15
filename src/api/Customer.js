@@ -40,3 +40,18 @@ export function getCustomerById(customerId, onSuccess, onError){
         }
     })
 }
+
+export function updateCustomer(customerId, customer, onSuccess, onError){
+    $.ajax({
+        type: 'PUT',
+        url: `${CUSTOMER_URL}/${customerId}`,
+        contentType: 'application/json',
+        data: JSON.stringify(customer),
+        success: function (res) {
+            onSuccess();
+        },
+        error: function (err) {
+            onError(err);
+        }
+    })
+}
