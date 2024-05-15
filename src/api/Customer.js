@@ -55,3 +55,16 @@ export function updateCustomer(customerId, customer, onSuccess, onError){
         }
     })
 }
+
+export function deleteCustomer(customerId, onSuccess, onError){
+    $.ajax({
+        type: 'DELETE',
+        url: `${CUSTOMER_URL}/${customerId}`,
+        success: function (res) {
+            onSuccess();
+        },
+        error: function (err) {
+            onError(err);
+        }
+    })
+}

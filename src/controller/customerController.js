@@ -1,6 +1,6 @@
 import validator from "validator/es";
 import CustomerModel from "../model/CustomerModel.js";
-import {getAllCustomers, getCustomerById, saveCustomer, updateCustomer} from "../api/Customer.js";
+import {deleteCustomer, getAllCustomers, getCustomerById, saveCustomer, updateCustomer} from "../api/Customer.js";
 import {showToast} from "../util/toast.js";
 
 const customerName = $('#customer_name');
@@ -169,7 +169,17 @@ $(document).on('click', '.edit-customer-btn', function () {
 
 $(document).on('click', '.delete-customer-btn', function () {
     let customerId = $(this).attr('data-customer-id');
-    showToast('success','This is a bottom right toast!');
+
+    deleteCustomer(customerId,
+        function (){
+            loadAllCustomers();
+            showToast('success','Customer deleted successfully!');
+        },
+        function (err){
+            console.error('Error updating customer:', err);
+            showToast('error','Error deleting customer!');
+        }
+    )
 });
 
 function removeCustomerValidationError() {
@@ -190,6 +200,8 @@ $(document).on('click', '#add_customer_btn',function() {
     customerContact.val('');
     customerAddress.val('');
     customerDob.val('');
+    customerMale.removeAttr('checked');
+    customerFemale.removeAttr('checked');
 
     new_customer_form.showModal()
 });
