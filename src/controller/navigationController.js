@@ -3,8 +3,9 @@ $(document).ready(function() {
     const products_section = $('#products');
     const customer_section = $('#customer');
     const order_section = $('#order');
+    const employee_section = $('#employee');
 
-    const sections = [dashboard_section, products_section, customer_section, order_section];
+    const sections = [dashboard_section, products_section, customer_section, order_section, employee_section];
     const links = $('.menu a');
 
     function removeAllSections() {
@@ -43,6 +44,12 @@ $(document).ready(function() {
         removeAllSections();
         $('#order').css('display', 'block');
         highlightLink('#order_nav');
+    });
+
+    $('#employee_nav').on('click', () => {
+        removeAllSections();
+        $('#employee').css('display', 'block');
+        highlightLink('#employee_nav');
     });
 });
 

@@ -50,6 +50,7 @@ function loadAllCustomers() {
         },
         function (err) {
             console.error('Error loading customer:', err);
+            showToast('error','Error loading customer!');
         })
 }
 
