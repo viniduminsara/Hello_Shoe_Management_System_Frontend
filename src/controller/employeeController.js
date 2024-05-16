@@ -155,19 +155,29 @@ $('#employeeForm').submit(function (e) {
 function changeToEditEmployeeModal(employeeId){
     getEmployeeById(employeeId,
         function (employee) {
-            new_employee_form.showModal()
             currentEmployeeId = employee.employeeId;
 
             employeeName.val(employee.name);
-            employeeDesignation.val(employee.designation)
-            employeeCivilState.val(employee.civilState)
-            employeeAddress.val(employee.address)
-            // employeeContact = $('#employee_contact');
-            // employeeEmail = $('#employee_email');
-            // employeeGuardian = $('#employee_guardian');
-            // employeeEmergencyContact = $('#employee_emergencyContact');
-            // employeeJoinedDate = $('#employee_joinedDate');
-            // employeeDob = $('#employee_dob');
+            employeeDesignation.val(employee.designation);
+            employeeCivilState.val(employee.civilState);
+            employeeAddress.val(employee.address);
+            employeeContact.val(employee.contact);
+            employeeEmail.val(employee.email);
+            employeeGuardian.val(employee.guardian);
+            employeeEmergencyContact.val(employee.emergencyContact);
+            employeeJoinedDate.val(employee.joinedDate);
+            employeeDob.val(employee.dob);
+
+            if (employee.gender === 'FEMALE'){
+                employeeMale.removeAttr('checked');
+                employeeFemale.attr('checked', 'checked');
+            }else if (employee.gender === 'MALE'){
+                employeeFemale.removeAttr('checked');
+                employeeMale.attr('checked', 'checked');
+            }
+
+            new_employee_form.showModal()
+
         },
         function (error) {
             console.error('Error fetching employee:', error);
@@ -180,6 +190,29 @@ $(document).on('click', '.edit-employee-btn', function () {
     const employeeId = $(this).attr('data-employee-id');
     $('#new_employee_form .modal-box h1').text('Edit Employee');
     $('#employeeSaveBtn').text('Update');
+    $('#employee_profilePic').addClass('hidden');
+    changeToEditEmployeeModal(employeeId);
+});
+
+$(document).on('click', '#add_employee_btn',function() {
+    $('#new_employee_form .modal-box h1').text('Add Employee');
+    $('#employeeSaveBtn').text('Save');
+    $('#employee_profilePic').removeClass('hidden');
+
+    employeeName.val('');
+    employeeDesignation.val('');
+    employeeCivilState.val('');
+    employeeAddress.val('');
+    employeeContact.val('');
+    employeeEmail.val('');
+    employeeGuardian.val('');
+    employeeEmergencyContact.val('');
+    employeeJoinedDate.val('');
+    employeeDob.val('');
+    employeeMale.removeAttr('checked');
+    employeeFemale.removeAttr('checked');
+
+    new_employee_form.showModal()
 });
 
 function removeEmployeeValidationError() {
