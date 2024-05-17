@@ -41,3 +41,32 @@ export function getEmployeeById(employeeId, onSuccess, onError){
         }
     })
 }
+
+export function updateEmployee(employeeId, formData, onSuccess, onError){
+    $.ajax({
+        type: 'PUT',
+        url: `${EMPLOYEE_URL}/${employeeId}`,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function () {
+            onSuccess();
+        },
+        error: function (err) {
+            onError(err);
+        }
+    })
+}
+
+export function deleteEmployee(employeeId, onSuccess, onError){
+    $.ajax({
+        type: 'DELETE',
+        url: `${EMPLOYEE_URL}/${employeeId}`,
+        success: function () {
+            onSuccess();
+        },
+        error: function (err) {
+            onError(err);
+        }
+    })
+}

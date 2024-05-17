@@ -1,5 +1,5 @@
 import validator from "validator/es";
-import {getAllEmployees, getEmployeeById, saveEmployee} from "../api/Employee.js";
+import {deleteEmployee, getAllEmployees, getEmployeeById, saveEmployee, updateEmployee} from "../api/Employee.js";
 import {showToast} from "../util/toast.js";
 
 const employeeName = $('#employee_name');
@@ -16,13 +16,15 @@ const employeeProfilePic = $('#employee_profilePic');
 const employeeMale = $('#employee_male');
 const employeeFemale = $('#employee_female');
 
+const employeeFormBtn = $('#employeeSaveBtn');
+
 let currentEmployeeId;
 
-function loadAllEmployees(){
+function loadAllEmployees() {
     getAllEmployees(
-        function (employees){
+        function (employees) {
+            $('#employee_table tbody').empty();
             employees.map((employee, index) => {
-                console.log(employee.profilePic)
                 $('#employee_table tbody').append(
                     `<tr>
                             <th>${index + 1}</th>
@@ -66,9 +68,9 @@ function loadAllEmployees(){
                 );
             })
         },
-        function (err){
+        function (err) {
             console.error('Error loading employees:', err);
-            showToast('error','Error loading employees!');
+            showToast('error', 'Error loading employees!');
         }
     )
 }
@@ -76,83 +78,97 @@ function loadAllEmployees(){
 loadAllEmployees();
 
 $('#employeeForm').submit(function (e) {
-    e.preventDefault();
+        e.preventDefault();
 
-    removeEmployeeValidationError();
-    const formData = new FormData(this);
+        removeEmployeeValidationError();
+        const formData = new FormData(this);
 
-    // Validation checks
-    let errors = [];
+        // Validation checks
+        let errors = [];
 
-    if (!validator.isLength(formData.get('name'), {min: 2, max: 50})) {
-        errors.push('Name must be between 2 and 50 characters');
-        $('#employee_name_error').text('Name must be between 2 and 50 characters');
-    }
-    if (validator.isEmpty(formData.get('designation'))) {
-        errors.push('Please enter the designation');
-        $('#employee_designation_error').text('Please enter the designation');
-    }
-    if (validator.isEmpty(formData.get('civilState'))) {
-        errors.push('Please enter the Civil State');
-        $('#employee_civilState_error').text('Please enter the Civil State');
-    }
-    if (!validator.isLength(formData.get('address'), {min: 5, max: 100})) {
-        errors.push('Address must be between 5 and 100 characters');
-        $('#employee_address_error').text('Address must be between 5 and 100 characters');
-    }
-    if (!validator.isMobilePhone(formData.get('contact'), 'any', {strictMode: false})) {
-        errors.push('Invalid contact number');
-        $('#employee_contact_error').text('Invalid contact number');
-    }
-    if (!validator.isEmail(formData.get('email'))) {
-        errors.push('Invalid email format');
-        $('#employee_email_error').text('Invalid email format');
-    }
-    if (validator.isEmpty(formData.get('guardian'))) {
-        errors.push('Please enter the guardian name');
-        $('#employee_guardian_error').text('Please enter the guardian name');
-    }
-    if (!validator.isMobilePhone(formData.get('emergencyContact'), 'any', {strictMode: false})) {
-        errors.push('Invalid emergency contact number');
-        $('#employee_emergencyContact_error').text('Invalid emergency contact number');
-    }
-    if (!validator.isDate(formData.get('joinedDate'))) {
-        errors.push('Invalid joinedDate');
-        $('#employee_joinedDate_error').text('Invalid joinedDate');
-    }
-    if (!validator.isDate(formData.get('dob'))) {
-        errors.push('Invalid dob');
-        $('#employee_dob_error').text('Invalid dob');
-    }
-    if (validator.isEmpty(formData.get('profilePicture').name)) {
-        errors.push('Please select a profile picture');
-        $('#employee_profilePic_error').text('Please select a profile picture');
-    }
-    if (!formData.get('gender')) {
-        errors.push('Please select gender');
-        $('#employee_gender_error').text('Please select gender');
-    }
-
-    if (errors.length > 0) {
-        return;
-    }
-
-    for (const pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-    }
-
-    saveEmployee(formData,
-        function () {
-            showToast('success','Employee saved successfully!');
-        },
-        function (error) {
-            console.error('Error saving employee:', error);
-            showToast('error','Error saving customer!');
+        if (!validator.isLength(formData.get('name'), {min: 2, max: 50})) {
+            errors.push('Name must be between 2 and 50 characters');
+            $('#employee_name_error').text('Name must be between 2 and 50 characters');
         }
-    );
-});
+        if (validator.isEmpty(formData.get('designation'))) {
+            errors.push('Please enter the designation');
+            $('#employee_designation_error').text('Please enter the designation');
+        }
+        if (validator.isEmpty(formData.get('civilState'))) {
+            errors.push('Please enter the Civil State');
+            $('#employee_civilState_error').text('Please enter the Civil State');
+        }
+        if (!validator.isLength(formData.get('address'), {min: 5, max: 100})) {
+            errors.push('Address must be between 5 and 100 characters');
+            $('#employee_address_error').text('Address must be between 5 and 100 characters');
+        }
+        if (!validator.isMobilePhone(formData.get('contact'), 'any', {strictMode: false})) {
+            errors.push('Invalid contact number');
+            $('#employee_contact_error').text('Invalid contact number');
+        }
+        if (!validator.isEmail(formData.get('email'))) {
+            errors.push('Invalid email format');
+            $('#employee_email_error').text('Invalid email format');
+        }
+        if (validator.isEmpty(formData.get('guardian'))) {
+            errors.push('Please enter the guardian name');
+            $('#employee_guardian_error').text('Please enter the guardian name');
+        }
+        if (!validator.isMobilePhone(formData.get('emergencyContact'), 'any', {strictMode: false})) {
+            errors.push('Invalid emergency contact number');
+            $('#employee_emergencyContact_error').text('Invalid emergency contact number');
+        }
+        if (!validator.isDate(formData.get('joinedDate'))) {
+            errors.push('Invalid joinedDate');
+            $('#employee_joinedDate_error').text('Invalid joinedDate');
+        }
+        if (!validator.isDate(formData.get('dob'))) {
+            errors.push('Invalid dob');
+            $('#employee_dob_error').text('Invalid dob');
+        }
+        if (!formData.get('gender')) {
+            errors.push('Please select gender');
+            $('#employee_gender_error').text('Please select gender');
+        }
+        if (employeeFormBtn.text() === 'Save') {
+            if (validator.isEmpty(formData.get('profilePicture').name)) {
+                errors.push('Please select a profile picture');
+                $('#employee_profilePic_error').text('Please select a profile picture');
+            }
+        }
 
-function changeToEditEmployeeModal(employeeId){
+        if (errors.length > 0) {
+            return;
+        }
+        if (employeeFormBtn.text() === 'Save') {
+            saveEmployee(formData,
+                function () {
+                    loadAllEmployees();
+                    new_employee_form.close();
+                    showToast('success', 'Employee saved successfully!');
+                },
+                function (error) {
+                    console.error('Error saving employee:', error);
+                    showToast('error', 'Error saving customer!');
+                }
+            );
+        } else if (employeeFormBtn.text() === 'Update') {
+            updateEmployee(currentEmployeeId, formData,
+                function () {
+                    loadAllEmployees();
+                    new_employee_form.close();
+                    showToast('success', 'Employee updated successfully!');
+                },
+                function (error) {
+                    console.error('Error updating employee:', error);
+                    showToast('error', 'Error updating customer!');
+                }
+            );
+        }
+    }
+);
+
+function changeToEditEmployeeModal(employeeId) {
     getEmployeeById(employeeId,
         function (employee) {
             currentEmployeeId = employee.employeeId;
@@ -168,10 +184,10 @@ function changeToEditEmployeeModal(employeeId){
             employeeJoinedDate.val(employee.joinedDate);
             employeeDob.val(employee.dob);
 
-            if (employee.gender === 'FEMALE'){
+            if (employee.gender === 'FEMALE') {
                 employeeMale.removeAttr('checked');
                 employeeFemale.attr('checked', 'checked');
-            }else if (employee.gender === 'MALE'){
+            } else if (employee.gender === 'MALE') {
                 employeeFemale.removeAttr('checked');
                 employeeMale.attr('checked', 'checked');
             }
@@ -181,7 +197,7 @@ function changeToEditEmployeeModal(employeeId){
         },
         function (error) {
             console.error('Error fetching employee:', error);
-            showToast('error','Error fetching customer!');
+            showToast('error', 'Error fetching customer!');
         }
     );
 }
@@ -190,14 +206,29 @@ $(document).on('click', '.edit-employee-btn', function () {
     const employeeId = $(this).attr('data-employee-id');
     $('#new_employee_form .modal-box h1').text('Edit Employee');
     $('#employeeSaveBtn').text('Update');
-    $('#employee_profilePic').addClass('hidden');
+    employeeProfilePic.addClass('hidden');
     changeToEditEmployeeModal(employeeId);
 });
 
-$(document).on('click', '#add_employee_btn',function() {
+$(document).on('click', '.delete-employee-btn', function () {
+    const employeeId = $(this).attr('data-employee-id');
+
+    deleteEmployee(employeeId,
+        function (){
+            loadAllEmployees();
+            showToast('success','Employee deleted successfully!');
+        },
+        function (err){
+            console.error('Error updating customer:', err);
+            showToast('error','Error deleting employee!');
+        }
+    )
+});
+
+$(document).on('click', '#add_employee_btn', function () {
     $('#new_employee_form .modal-box h1').text('Add Employee');
     $('#employeeSaveBtn').text('Save');
-    $('#employee_profilePic').removeClass('hidden');
+    employeeProfilePic.removeClass('hidden');
 
     employeeName.val('');
     employeeDesignation.val('');
