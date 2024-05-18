@@ -717,9 +717,84 @@
 
             </section>
 
+            <section id="inventory">
+                <div class="flex justify-between items-center ">
+                    <h1 class="text-4xl font-bold my-8">Inventory</h1>
+
+                    <button class="btn btn-primary" id="add_inventory_btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/>
+                        </svg>
+                        Add Inventory
+                    </button>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="table">
+                        <!-- head -->
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Occasion</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- row 1 -->
+                        <tr>
+                            <th>CSM00001</th>
+                            <td>
+                                <div class="flex items-center gap-3">
+                                    <div class="avatar">
+                                        <div class="mask mask-squircle w-12 h-12">
+                                            <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                                                 alt="Avatar Tailwind CSS Component"/>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="font-bold">
+                                            Nike Airforce
+                                            <span class="badge badge-success badge-sm mx-2">Available</span>
+                                        </div>
+                                        <div class="text-sm opacity-50">Nike Internationals pvt(lmt)</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>Shoe</td>
+                            <td>Casual</td>
+                            <td>Rs. 1200.00</td>
+                            <th>
+                                <button class="btn btn-outline btn-primary btn-sm">details</button>
+                            </th>
+                        </tr>
+                        </tbody>
+                        <!-- foot -->
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Occasion</th>
+                            <th>Price</th>
+                            <th></th>
+                        </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+                <div id="inventory_form">
+
+                </div>
+            </section>
+
             <section id="employee">
                 <div class="flex justify-between items-center ">
-                    <h1 class="text-4xl font-bold my-8">Employees</h1>
+                                        <h1 class="text-4xl font-bold my-8">Employees</h1>
 
                     <button class="btn btn-primary" id="add_employee_btn" onclick="new_employee_form.showModal()">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -828,8 +903,10 @@
                         <tr>
                             <th></th>
                             <th>Name</th>
-                            <th>Job</th>
-                            <th>Favorite Color</th>
+                            <th>Email</th>
+                            <th>Contact</th>
+                            <th>Joined Date</th>
+                            <th>Address</th>
                             <th></th>
                         </tr>
                         </tfoot>
@@ -892,7 +969,7 @@
                 </a>
             </li>
             <li>
-                <a>
+                <a id="inventory_nav">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                          stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round"
