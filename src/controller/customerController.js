@@ -119,10 +119,12 @@ $('#customerSaveBtn').on('click', function () {
                 loadAllCustomers();
                 new_customer_form.close();
                 showToast('success','Customer updated successfully!');
+                clearCustomerInputs();
             },
             function (error) {
                 console.error('Error updating customer:', error);
                 showToast('error','Error updating customer!');
+                clearCustomerInputs();
             }
         )
     }
@@ -170,10 +172,12 @@ $(document).on('click', '.delete-customer-btn', function () {
         function (){
             loadAllCustomers();
             showToast('success','Customer deleted successfully!');
+            clearCustomerInputs();
         },
         function (err){
             console.error('Error updating customer:', err);
             showToast('error','Error deleting customer!');
+            clearCustomerInputs();
         }
     )
 });
@@ -189,6 +193,11 @@ $(document).on('click', '#add_customer_btn',function() {
     $('#new_customer_form .modal-box h1').text('Add Customer');
     $('#customerSaveBtn').text('Save');
 
+    clearCustomerInputs();
+    new_customer_form.showModal()
+});
+
+function clearCustomerInputs(){
     customerName.val('');
     customerEmail.val('');
     customerContact.val('');
@@ -196,9 +205,7 @@ $(document).on('click', '#add_customer_btn',function() {
     customerDob.val('');
     customerMale.removeAttr('checked');
     customerFemale.removeAttr('checked');
-
-    new_customer_form.showModal()
-});
+}
 
 
 
