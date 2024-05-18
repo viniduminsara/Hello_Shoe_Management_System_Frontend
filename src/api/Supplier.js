@@ -14,3 +14,16 @@ export function saveSupplier(supplier, onSuccess, onError){
         }
     })
 }
+
+export function getAllSuppliers(onSuccess, onError){
+    $.ajax({
+        type: 'GET',
+        url: SUPPLIER_URL,
+        success: function (suppliers){
+            onSuccess(suppliers);
+        },
+        error: function (err){
+            onError(err);
+        }
+    })
+}
