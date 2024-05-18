@@ -172,12 +172,10 @@ $(document).on('click', '.delete-customer-btn', function () {
         function (){
             loadAllCustomers();
             showToast('success','Customer deleted successfully!');
-            clearCustomerInputs();
         },
         function (err){
-            console.error('Error updating customer:', err);
+            console.error('Error deleting customer:', err);
             showToast('error','Error deleting customer!');
-            clearCustomerInputs();
         }
     )
 });

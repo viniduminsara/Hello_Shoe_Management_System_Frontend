@@ -1,6 +1,6 @@
 import validator from "validator/es";
 import SupplierModel from "../model/SupplierModel.js";
-import {getAllSuppliers, saveSupplier} from "../api/Supplier.js";
+import {deleteSupplier, getAllSuppliers, getSupplierById, saveSupplier, updateSupplier} from "../api/Supplier.js";
 import {showToast} from "../util/toast.js";
 
 
@@ -10,6 +10,8 @@ const supplierContact1 = $('#supplier_contact1');
 const supplierContact2 = $('#supplier_contact2');
 const supplierEmail = $('#supplier_email');
 const supplierCategory = $('#supplier_category');
+
+let currentSupplierId;
 
 function loadAllSuppliers(){
     getAllSuppliers(
@@ -101,24 +103,86 @@ $('#supplierSaveBtn').on('click', function (){
 
     const supplier = new SupplierModel(nameVal,addressVal,contact1Val,contact2Val,emailVal,categoryVal);
 
-    saveSupplier(supplier,
-        function () {
-            new_supplier_form.close();
-            loadAllSuppliers();
-            showToast('success','Supplier saved successfully!');
-            clearSupplierInputs();
+    if ($('#supplierSaveBtn').text() === 'Save') {
+        saveSupplier(supplier,
+            function () {
+                new_supplier_form.close();
+                loadAllSuppliers();
+                showToast('success', 'Supplier saved successfully!');
+                clearSupplierInputs();
+            },
+            function (error) {
+                console.error('Error saving supplier:', error);
+                showToast('error', 'Error saving supplier!');
+                clearSupplierInputs();
+            }
+        )
+    }else {
+        updateSupplier(currentSupplierId, supplier,
+            function () {
+                loadAllSuppliers();
+                new_supplier_form.close();
+                showToast('success','Supplier updated successfully!');
+                clearSupplierInputs();
+            },
+            function (error) {
+                console.error('Error updating supplier:', error);
+                showToast('error','Error updating supplier!');
+                clearSupplierInputs();
+            }
+        )
+    }
+});
+
+function changeToEditSupplierModal(supplierId){
+    getSupplierById(supplierId,
+        function (supplier){
+            new_supplier_form.showModal();
+            currentSupplierId = supplier.supplierId;
+
+            supplierName.val(supplier.supplierName);
+            supplierEmail.val(supplier.email);
+            supplierAddress.val(supplier.address);
+            supplierContact1.val(supplier.contact1);
+            supplierContact2.val(supplier.contact2);
+            supplierCategory.val(supplier.supplierCategory);
         },
-        function (error) {
-            console.error('Error saving supplier:', error);
-            showToast('error','Error saving supplier!');
-            clearSupplierInputs();
+        function (err){
+            console.error('Error fetching customer:', err);
+            showToast('error','Error loading suppliers!');
         }
     )
+}
+
+$(document).on('click', '.edit-supplier-btn', function () {
+    let supplierId = $(this).attr('data-supplier-id');
+    $('#new_supplier_form .modal-box h1').text('Edit Supplier');
+    $('#supplierSaveBtn').text('Update');
+    changeToEditSupplierModal(supplierId);
 });
 
 
 $(document).on('click', '#add_supplier_btn',function() {
+    $('#new_supplier_form .modal-box h1').text('Add Supplier');
+    $('#supplierSaveBtn').text('Save');
+
+    clearSupplierInputs();
     new_supplier_form.showModal();
+});
+
+$(document).on('click', '.delete-supplier-btn', function () {
+    let supplierId = $(this).attr('data-supplier-id');
+
+    deleteSupplier(supplierId,
+        function (){
+            loadAllSuppliers();
+            showToast('success','Supplier deleted successfully!');
+        },
+        function (err){
+            console.error('Error deleting supplier:', err);
+            showToast('error','Error deleting supplier!');
+        }
+    )
 });
 
 function removeSupplerValidationError(){
