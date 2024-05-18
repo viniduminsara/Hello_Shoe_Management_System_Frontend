@@ -5,9 +5,11 @@ $(document).ready(function() {
     const order_section = $('#order');
     const employee_section = $('#employee');
     const inventory_section = $('#inventory');
+    const supplier_section = $('#supplier');
 
     const sections = [
-        dashboard_section, products_section, customer_section, order_section, employee_section, inventory_section
+        dashboard_section, products_section, customer_section, order_section, employee_section, inventory_section,
+        supplier_section
     ];
     const links = $('.menu a');
 
@@ -59,6 +61,12 @@ $(document).ready(function() {
         removeAllSections();
         $('#inventory').css('display', 'block');
         highlightLink('#inventory_nav');
+    });
+
+    $('#supplier_nav').on('click', () => {
+        removeAllSections();
+        $('#supplier').css('display', 'block');
+        highlightLink('#supplier_nav');
     });
 });
 
