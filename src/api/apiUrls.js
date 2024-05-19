@@ -6,3 +6,5 @@ export const CUSTOMER_URL = `${baseUrl}/customer`;
 export const EMPLOYEE_URL = `${baseUrl}/employee`;
 
 export const SUPPLIER_URL = `${baseUrl}/supplier`;
+
+export const INVENTORY_URL = `${baseUrl}/inventory`

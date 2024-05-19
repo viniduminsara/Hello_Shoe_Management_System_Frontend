@@ -149,7 +149,7 @@ $('#employeeForm').submit(function (e) {
                 },
                 function (error) {
                     console.error('Error saving employee:', error);
-                    showToast('error', 'Error saving customer!');
+                    showToast('error', 'Error saving employee!');
                 }
             );
         } else if (employeeFormBtn.text() === 'Update') {

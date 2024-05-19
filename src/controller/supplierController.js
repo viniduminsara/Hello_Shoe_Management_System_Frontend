@@ -93,7 +93,7 @@ $('#supplierSaveBtn').on('click', function (){
         $('#supplier_contact2_error').text('Invalid contact number');
     }
     if (!categoryVal){
-        errors.push('Please select gender');
+        errors.push('Please select category');
         $('#supplier_category_error').text('Please select category');
     }
 

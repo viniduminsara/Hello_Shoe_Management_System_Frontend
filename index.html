@@ -800,7 +800,7 @@
                     </table>
                 </div>
 
-                <div id="inventory_form" class="hidden">
+                <div id="inventory_form_view" class="hidden">
                     <div class="flex justify-between items-center my-8">
                         <button id="inventory_back_btn" class="btn btn-ghost btn-outline btn-circle">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -809,132 +809,145 @@
                                       d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"/>
                             </svg>
                         </button>
-                        <button class="btn btn-success">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z" />
+                        <button class="btn btn-success" type="submit" form="inventory_form">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                 stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0 1 11.186 0Z"/>
                             </svg>
                             Save Item
                         </button>
                     </div>
 
-                    <div class="my-4 flex flex-wrap gap-5 justify-center">
-                        <div>
-                            <input id="inventory_name" type="text" placeholder="Name"
-                                   class="input input-bordered w-full max-w-xs"/>
-                            <p class="text-error text-xs mt-2" id="inventory_name_error"></p>
-                        </div>
-                        <div>
-                            <input id="inventory_desc" type="text" placeholder="Description"
-                                   class="input input-bordered w-full max-w-xs"/>
-                            <p class="text-error text-xs mt-2" id="inventory_desc_error"></p>
-                        </div>
-                        <div>
-                            <input id="inventory_selling_price" type="text" placeholder="Selling Price"
-                                   class="input input-bordered w-full max-w-xs"/>
-                            <p class="text-error text-xs mt-2" id="inventory_selling_price_error"></p>
-                        </div>
-                        <div>
-                            <input id="inventory_buying_price" type="text" placeholder="Buying Price"
-                                   class="input input-bordered w-full max-w-xs"/>
-                            <p class="text-error text-xs mt-2" id="inventory_buying_price_error"></p>
-                        </div>
-                    </div>
-                    <div class="my-4 flex flex-wrap gap-5 justify-center">
-                        <div>
-                            <select id="inventory_gender" class="select select-bordered max-w-xs">
-                                <option disabled selected>Gender</option>
-                                <option>Male</option>
-                                <option>Female</option>
-                            </select>
-                            <p class="text-error text-xs mt-2" id="inventory_gender_error"></p>
-                        </div>
-                        <div>
-                            <select id="inventory_occasion" class="select select-bordered max-w-xs">
-                                <option disabled selected value="">Occasion Type</option>
-                                <option value="FORMAL">Formal</option>
-                                <option value="CASUAL">Casual</option>
-                                <option value="INDUSTRIAL">Industrial</option>
-                                <option value="SPORT">Sport</option>
-                            </select>
-                            <p class="text-error text-xs mt-2" id="inventory_occasion_error"></p>
-                        </div>
-                        <div>
-                            <select id="inventory_verity" class="select select-bordered max-w-xs">
-                                <option disabled selected value="">Verity</option>
-                                <option value="HEEL">Heel</option>
-                                <option value="FLATS">Flats</option>
-                                <option value="WEDGES">Wedges</option>
-                                <option value="FLIP_FLOPS">Flip Flops</option>
-                                <option value="SANDALS">Sandals</option>
-                                <option value="SHOES">Shoes</option>
-                                <option value="SLIPPERS">Slippers</option>
-                                <option value="SHOE_SHAMPOO">Shoe Shampoo</option>
-                                <option value="POLISH">Polish</option>
-                            </select>
-                            <p class="text-error text-xs mt-2" id="inventory_verity_error"></p>
-                        </div>
-                        <div>
-                            <select id="inventory_supplier" class="select select-bordered max-w-xs">
-                                <option disabled selected value="">Supplier</option>
-                            </select>
-                            <p class="text-error text-xs mt-2" id="inventory_supplier_error"></p>
-                        </div>
-                    </div>
-
-                    <div class="my-8 flex justify-around flex-col sm:flex-row">
-
-                        <div class="overflow-x-auto">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Size</th>
-                                    <th>Qty</th>
-                                </tr>
-                                </thead>
-                                <tbody id="qty-table">
-                                <tr>
-                                    <td>6</td>
-                                    <td><input type="number" id="qty-6" value="0" class="input input-bordered input-sm">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>7</td>
-                                    <td><input type="number" id="qty-7" value="0" class="input input-bordered input-sm">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td><input type="number" id="qty-8" value="0" class="input input-bordered input-sm">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td><input type="number" id="qty-9" value="0" class="input input-bordered input-sm">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>10</td>
-                                    <td><input type="number" id="qty-10" value="0"
-                                               class="input input-bordered input-sm"></td>
-                                </tr>
-                                <tr>
-                                    <td>11</td>
-                                    <td><input type="number" id="qty-11" value="0"
-                                               class="input input-bordered input-sm"></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="avatar flex flex-col items-center">
-                            <div class="w-48 rounded">
-                                <img id="item_image" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg"/>
+                    <form id="inventory_form" enctype="multipart/form-data">
+                        <div class="my-4 flex flex-wrap gap-5 justify-center">
+                            <div>
+                                <input id="inventory_desc" type="text" placeholder="Description"
+                                       class="input input-bordered w-full max-w-xs" name="itemDesc"/>
+                                <p class="text-error text-xs mt-2" id="inventory_desc_error"></p>
                             </div>
-                            <br>
-                            <input id="inventory_itemPic" type="file" name="profilePicture" placeholder="Profile Pic"
-                                   class="file-input file-input-bordered w-full max-w-xs" accept="image/*"/>
-                            <p class="text-error text-xs mt-2" id="inventory_itemPic_error"></p>
+                            <div>
+                                <input id="inventory_selling_price" type="text" placeholder="Selling Price"
+                                       class="input input-bordered w-full max-w-xs" name="sellingPrice"/>
+                                <p class="text-error text-xs mt-2" id="inventory_selling_price_error"></p>
+                            </div>
+                            <div>
+                                <input id="inventory_buying_price" type="text" placeholder="Buying Price"
+                                       class="input input-bordered w-full max-w-xs" name="buyingPrice"/>
+                                <p class="text-error text-xs mt-2" id="inventory_buying_price_error"></p>
+                            </div>
                         </div>
-                    </div>
+                        <div class="my-4 flex flex-wrap gap-5 justify-center">
+                            <div>
+                                <select id="inventory_gender" class="select select-bordered max-w-xs" name="gender">
+                                    <option disabled selected value="">Gender</option>
+                                    <option value="MALE">Male</option>
+                                    <option value="FEMALE">Female</option>
+                                </select>
+                                <p class="text-error text-xs mt-2" id="inventory_gender_error"></p>
+                            </div>
+                            <div>
+                                <select id="inventory_occasion" class="select select-bordered max-w-xs"
+                                        name="occasionType">
+                                    <option disabled selected value="">Occasion Type</option>
+                                    <option value="FORMAL">Formal</option>
+                                    <option value="CASUAL">Casual</option>
+                                    <option value="INDUSTRIAL">Industrial</option>
+                                    <option value="SPORT">Sport</option>
+                                </select>
+                                <p class="text-error text-xs mt-2" id="inventory_occasion_error"></p>
+                            </div>
+                            <div>
+                                <select id="inventory_verity" class="select select-bordered max-w-xs" name="verityType">
+                                    <option disabled selected value="">Verity</option>
+                                    <option value="HEEL">Heel</option>
+                                    <option value="FLATS">Flats</option>
+                                    <option value="WEDGES">Wedges</option>
+                                    <option value="FLIP_FLOPS">Flip Flops</option>
+                                    <option value="SANDALS">Sandals</option>
+                                    <option value="SHOES">Shoes</option>
+                                    <option value="SLIPPERS">Slippers</option>
+                                    <option value="SHOE_SHAMPOO">Shoe Shampoo</option>
+                                    <option value="POLISH">Polish</option>
+                                </select>
+                                <p class="text-error text-xs mt-2" id="inventory_verity_error"></p>
+                            </div>
+                            <div>
+                                <select id="inventory_supplier" class="select select-bordered max-w-xs"
+                                        name="supplierId">
+                                    <option disabled selected value="">Supplier</option>
+                                </select>
+                                <p class="text-error text-xs mt-2" id="inventory_supplier_error"></p>
+                            </div>
+                        </div>
+
+                        <div class="my-8 flex justify-around flex-col sm:flex-row">
+
+                            <div class="overflow-x-auto">
+                                <p class="text-error text-xs mt-2" id="inventory_size_error"></p>
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Size</th>
+                                        <th>Qty</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="qty-table">
+                                    <tr>
+                                        <td>Size 5</td>
+                                        <td><input type="number" id="qty-5" value="0" min="0"
+                                                   class="input input-bordered input-sm">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size 6</td>
+                                        <td><input type="number" id="qty-6" value="0" min="0"
+                                                   class="input input-bordered input-sm">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size 7</td>
+                                        <td><input type="number" id="qty-7" value="0" min="0"
+                                                   class="input input-bordered input-sm">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size 8</td>
+                                        <td><input type="number" id="qty-8" value="0" min="0"
+                                                   class="input input-bordered input-sm">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size 9</td>
+                                        <td><input type="number" id="qty-9" value="0" min="0"
+                                                   class="input input-bordered input-sm">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size 10</td>
+                                        <td><input type="number" id="qty-10" value="0" min="0"
+                                                   class="input input-bordered input-sm"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Size 11</td>
+                                        <td><input type="number" id="qty-11" value="0" min="0"
+                                                   class="input input-bordered input-sm"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="avatar flex flex-col items-center">
+                                <div class="w-48 rounded">
+                                    <img id="item_image"
+                                         src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg"/>
+                                </div>
+                                <br>
+                                <input id="inventory_itemPic" type="file" name="itemPicture"
+                                       class="file-input file-input-bordered w-full max-w-xs" accept="image/*"/>
+                                <p class="text-error text-xs mt-2" id="inventory_itemPic_error"></p>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </section>
 
