@@ -1,10 +1,13 @@
 import {getAllSuppliers} from "../api/Supplier.js";
 import {showToast} from "../util/toast.js";
 import validator from "validator/es";
-import {getAllInventories, saveInventory} from "../api/Inventory.js";
+import {getAllInventories, getInventoryById, saveInventory, updateInventory} from "../api/Inventory.js";
 
 const inventoryItemPic = $('#inventory_itemPic');
 const itemImage = $('#item_image');
+const inventoryBtn = $('#inventory_btn');
+
+let currentInventoryId;
 
 function loadAllInventories(){
     getAllInventories(
@@ -113,27 +116,43 @@ $('#inventory_form').submit(function (e){
         errors.push('Please select supplier');
         $('#inventory_supplier_error').text('Please select supplier');
     }
-    if (validator.isEmpty(formData.get('itemPicture').name)) {
-        errors.push('Please select a item picture');
-        $('#inventory_itemPic_error').text('Please select a item picture');
+    if (inventoryBtn.text() === 'Save Item') {
+        if (validator.isEmpty(formData.get('itemPicture').name)) {
+            errors.push('Please select a item picture');
+            $('#inventory_itemPic_error').text('Please select a item picture');
+        }
     }
 
     if (errors.length > 0) {
         return;
     }
-
-    saveInventory(formData,
-        function () {
-            // loadAllEmployees();
-            // new_employee_form.close();
-            $('#inventory_back_btn').click();
-            showToast('success', 'Inventory saved successfully!');
-        },
-        function (error) {
-            console.error('Error saving inventory:', error);
-            showToast('error', 'Error saving inventory!');
-        }
-    );
+    if (inventoryBtn.text() === 'Save Item') {
+        saveInventory(formData,
+            function () {
+                showToast('success', 'Inventory saved successfully!');
+                loadAllInventories();
+                $('#inventory_back_btn').click();
+                clearInventoryInputs();
+            },
+            function (error) {
+                console.error('Error saving inventory:', error);
+                showToast('error', 'Error saving inventory!');
+            }
+        );
+    }else if (inventoryBtn.text() === 'Edit Item'){
+        updateInventory(currentInventoryId, formData,
+            function (){
+                showToast('success', 'Inventory updated successfully!');
+                loadAllInventories();
+                $('#inventory_back_btn').click();
+                clearInventoryInputs();
+            },
+            function (err){
+                console.error('Error updating inventory:', err);
+                showToast('error', 'Error updating inventory!');
+            }
+        )
+    }
 });
 function loadSuppliers(){
     getAllSuppliers(
@@ -152,6 +171,38 @@ function loadSuppliers(){
 }
 
 loadSuppliers();
+
+$(document).on('click', '.edit-inventory-btn', function () {
+    const inventoryId = $(this).attr('data-inventory-id');
+    $('#inventory-header').addClass('hidden');
+    $('#inventory_table').addClass('hidden');
+    inventoryItemPic.addClass('hidden');
+    inventoryBtn.text('Edit Item');
+    $('#inventory_form_view').removeClass('hidden');
+
+    getInventoryById(inventoryId,
+        function (inventory){
+            currentInventoryId = inventory.itemCode;
+
+            $('#inventory_desc').val(inventory.itemDesc);
+            $('#inventory_selling_price').val(inventory.sellingPrice);
+            $('#inventory_buying_price').val(inventory.buyingPrice);
+            $('#inventory_gender').val(inventory.gender);
+            $('#inventory_occasion').val(inventory.occasionType);
+            $('#inventory_verity').val(inventory.verityType);
+            $('#inventory_supplier').val(inventory.supplierId);
+            itemImage.attr('src', `data:image/jpeg;base64,${inventory.itemPic}`);
+
+            inventory.itemSizeDTOS.forEach(item => {
+                $(`#qty-${item.size}`).val(item.qty);
+            });
+        },
+        function (err){
+            console.error('Error fetching inventory:', error);
+            showToast('error', 'Error fetching inventory!');
+        }
+    )
+});
 
 inventoryItemPic.on('change', (e) => {
     const file = e.target.files[0];
@@ -190,7 +241,24 @@ $(document).on('click', '#inventory_back_btn', function (){
     $('#inventory-header').removeClass('hidden');
     $('#inventory_table').removeClass('hidden');
     $('#inventory_form_view').addClass('hidden');
+    clearInventoryInputs();
 });
+
+function clearInventoryInputs(){
+    $('#inventory_desc').val('');
+    $('#inventory_selling_price').val('');
+    $('#inventory_buying_price').val('');
+    $('#inventory_gender').val('');
+    $('#inventory_occasion').val('');
+    $('#inventory_verity').val('');
+    $('#inventory_supplier').val('');
+    inventoryBtn.text('Save Item');
+    itemImage.attr('src', 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg');
+
+    for (let i = 5; i < 12; i++){
+        $(`#qty-${i}`).val(0);
+    }
+}
 
 function removeSupplierValidationErrors(){
     const errorLabels = [
