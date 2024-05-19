@@ -850,34 +850,39 @@
                         </div>
                         <div>
                             <select id="inventory_occasion" class="select select-bordered max-w-xs">
-                                <option disabled selected>Occasion Type</option>
+                                <option disabled selected value="">Occasion Type</option>
+                                <option value="FORMAL">Formal</option>
+                                <option value="CASUAL">Casual</option>
+                                <option value="INDUSTRIAL">Industrial</option>
+                                <option value="SPORT">Sport</option>
                             </select>
                             <p class="text-error text-xs mt-2" id="inventory_occasion_error"></p>
                         </div>
                         <div>
                             <select id="inventory_verity" class="select select-bordered max-w-xs">
-                                <option disabled selected>Verity</option>
+                                <option disabled selected value="">Verity</option>
+                                <option value="HEEL">Heel</option>
+                                <option value="FLATS">Flats</option>
+                                <option value="WEDGES">Wedges</option>
+                                <option value="FLIP_FLOPS">Flip Flops</option>
+                                <option value="SANDALS">Sandals</option>
+                                <option value="SHOES">Shoes</option>
+                                <option value="SLIPPERS">Slippers</option>
+                                <option value="SHOE_SHAMPOO">Shoe Shampoo</option>
+                                <option value="POLISH">Polish</option>
                             </select>
                             <p class="text-error text-xs mt-2" id="inventory_verity_error"></p>
                         </div>
                         <div>
                             <select id="inventory_supplier" class="select select-bordered max-w-xs">
-                                <option disabled selected>Supplier</option>
+                                <option disabled selected value="">Supplier</option>
                             </select>
                             <p class="text-error text-xs mt-2" id="inventory_supplier_error"></p>
                         </div>
                     </div>
 
-                    <div class="my-4 flex justify-around flex-col sm:flex-row">
-                        <div class="avatar flex flex-col items-center">
-                            <div class="w-48 rounded">
-                                <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"/>
-                            </div>
-                            <br>
-                            <input id="inventory_itemPic" type="file" name="profilePicture" placeholder="Profile Pic"
-                                   class="file-input file-input-bordered w-full max-w-xs"/>
-                            <p class="text-error text-xs mt-2" id="inventory_itemPic_error"></p>
-                        </div>
+                    <div class="my-8 flex justify-around flex-col sm:flex-row">
+
                         <div class="overflow-x-auto">
                             <table class="table">
                                 <thead>
@@ -919,6 +924,15 @@
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="avatar flex flex-col items-center">
+                            <div class="w-48 rounded">
+                                <img id="item_image" src="https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg"/>
+                            </div>
+                            <br>
+                            <input id="inventory_itemPic" type="file" name="profilePicture" placeholder="Profile Pic"
+                                   class="file-input file-input-bordered w-full max-w-xs" accept="image/*"/>
+                            <p class="text-error text-xs mt-2" id="inventory_itemPic_error"></p>
                         </div>
                     </div>
                 </div>
@@ -1088,7 +1102,7 @@
                                 <div class="my-4">
                                     <h3 class="my-3">Profile Pic</h3>
                                     <input id="employee_profilePic" type="file" name="profilePicture"
-                                           placeholder="Profile Pic"
+                                           placeholder="Profile Pic" accept="image/*"
                                            class="file-input file-input-bordered w-full max-w-xs"/>
                                     <p class="text-error text-xs mt-2" id="employee_profilePic_error"></p>
                                 </div>
