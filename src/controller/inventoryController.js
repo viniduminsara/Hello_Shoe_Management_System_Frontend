@@ -1,7 +1,13 @@
 import {getAllSuppliers} from "../api/Supplier.js";
 import {showToast} from "../util/toast.js";
 import validator from "validator/es";
-import {getAllInventories, getInventoryById, saveInventory, updateInventory} from "../api/Inventory.js";
+import {
+    deleteInventory,
+    getAllInventories,
+    getInventoryById,
+    saveInventory,
+    updateInventory
+} from "../api/Inventory.js";
 
 const inventoryItemPic = $('#inventory_itemPic');
 const itemImage = $('#item_image');
@@ -204,6 +210,21 @@ $(document).on('click', '.edit-inventory-btn', function () {
     )
 });
 
+$(document).on('click', '.delete-inventory-btn', function () {
+    const inventoryId = $(this).attr('data-inventory-id');
+
+    deleteInventory(inventoryId,
+        function (){
+            loadAllInventories();
+            showToast('success','Inventory deleted successfully!');
+        },
+        function (err){
+            console.error('Error updating inventory:', err);
+            showToast('error','Error deleting inventory!');
+        }
+    )
+});
+
 inventoryItemPic.on('change', (e) => {
     const file = e.target.files[0];
 
@@ -252,6 +273,7 @@ function clearInventoryInputs(){
     $('#inventory_occasion').val('');
     $('#inventory_verity').val('');
     $('#inventory_supplier').val('');
+    inventoryItemPic.removeClass('hidden');
     inventoryBtn.text('Save Item');
     itemImage.attr('src', 'https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Glossary.svg');
 

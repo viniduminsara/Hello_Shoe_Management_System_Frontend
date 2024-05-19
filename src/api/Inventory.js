@@ -1,4 +1,4 @@
-import {EMPLOYEE_URL, INVENTORY_URL} from "./apiUrls.js";
+import {INVENTORY_URL} from "./apiUrls.js";
 
 export function saveInventory(formData, onSuccess, onError){
     $.ajax({
@@ -49,6 +49,19 @@ export function updateInventory(inventoryId, formData, onSuccess, onError){
         data: formData,
         contentType: false,
         processData: false,
+        success: function () {
+            onSuccess();
+        },
+        error: function (err) {
+            onError(err);
+        }
+    })
+}
+
+export function deleteInventory(inventoryId, onSuccess, onError){
+    $.ajax({
+        type: 'DELETE',
+        url: `${INVENTORY_URL}/${inventoryId}`,
         success: function () {
             onSuccess();
         },
