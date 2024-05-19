@@ -15,3 +15,16 @@ export function saveInventory(formData, onSuccess, onError){
         }
     })
 }
+
+export function getAllInventories(onSuccess, onError){
+    $.ajax({
+        type: 'GET',
+        url: INVENTORY_URL,
+        success: function (inventories) {
+            onSuccess(inventories);
+        },
+        error: function (err) {
+            onError(err);
+        }
+    })
+}
