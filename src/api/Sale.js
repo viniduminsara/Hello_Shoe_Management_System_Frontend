@@ -1,4 +1,4 @@
-import {CUSTOMER_URL, SALE_URL} from "./apiUrls.js";
+import {SALE_URL} from "./apiUrls.js";
 
 export function saveSale(sale, onSuccess, onError){
     $.ajax({

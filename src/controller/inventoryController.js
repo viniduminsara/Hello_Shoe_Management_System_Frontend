@@ -20,6 +20,14 @@ function loadAllInventories(){
         function (inventories){
             $('#inventory_table tbody').empty();
             inventories.map((inventory) => {
+                let badgeType;
+                if (inventory.status === 'Available'){
+                    badgeType = 'badge-success';
+                }else if (inventory.status === 'Low'){
+                    badgeType = 'badge-warning';
+                }else {
+                    badgeType = 'badge-error';
+                }
 
                 $('#inventory_table tbody').append(
                     `<tr>
@@ -35,7 +43,7 @@ function loadAllInventories(){
                                     <div>
                                         <div class="font-bold">
                                             ${inventory.itemDesc}
-                                            <span class="badge badge-success badge-sm mx-2">${inventory.status}</span>
+                                            <span class="badge badge-sm ${badgeType} mx-2">${inventory.status}</span>
                                         </div>
                                         <div class="text-sm opacity-50">${inventory.supplierName}</div>
                                     </div>

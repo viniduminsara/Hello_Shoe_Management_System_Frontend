@@ -10,5 +10,17 @@ export default {
   daisyui: {
     themes: ["sunset", "winter"],
   },
+  safelist: [
+      'badge',
+      'badge-success',
+      'badge-warning',
+      'badge-error',
+      'badge-sm',
+      'alert',
+      'alert-success',
+      'alert-warning',
+      'alert-error',
+      'text-success'
+  ]
 }
 
