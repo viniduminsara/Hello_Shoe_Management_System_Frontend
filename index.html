@@ -344,7 +344,7 @@
                                 <span class="text-lg font-bold">Total : </span>
                                 <span id="total-amount" class="text-lg font-thin">Rs. 0.00</span>
                             </div>
-                            <button id="checkout_btn" class="btn btn-secondary">
+                            <button id="checkout_btn_form" class="btn btn-secondary">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -353,6 +353,38 @@
                                 Proceed to Checkout
                             </button>
                         </div>
+
+                        <dialog id="checkout_form" class="modal">
+                            <div class="modal-box">
+                                <form method="dialog">
+                                    <button id="checkout_form_close" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                </form>
+                                <h1 class="text-2xl font-bold mb-2">Checkout</h1>
+                                <div class="flex justify-around items-center my-8">
+                                    <h2 id="total" class="text-lg font-bold"></h2>
+                                    <div>
+                                        <select id="payment_method" class="select select-bordered max-w-xs">
+                                            <option disabled selected value="">Payment Method</option>
+                                            <option value="CASH">Cash</option>
+                                            <option value="CARD">Card</option>
+                                        </select>
+                                        <p class="text-error text-xs mt-2" id="payment_method_error"></p>
+                                    </div>
+                                </div>
+                                <div id="cash_method" class="hidden flex justify-around items-center my-8">
+                                    <input type="number" id="payment_amount" placeholder="Payment" class="input input-bordered" min="0"/>
+                                    <input type="number" id="balance_amount" placeholder="Balance" class="input input-bordered" min="0"/>
+                                </div>
+                                <div id="card_method" class="hidden flex justify-around items-center my-8">
+                                    <input type="text" placeholder="Bank Name" class="input input-bordered" min="0"/>
+                                    <input type="number" placeholder="Card Number" class="input input-bordered" min="0"/>
+                                </div>
+                                <div class="flex justify-end">
+                                    <button id="checkout_btn" class="btn btn-primary">Checkout</button>
+                                </div>
+
+                            </div>
+                        </dialog>
 
                     </div>
 
@@ -1001,7 +1033,7 @@
 <script type="module" src="src/controller/employeeController.js"></script>
 <script type="module" src="src/controller/inventoryController.js"></script>
 <script type="module" src="src/controller/supplierController.js"></script>
-<script type="module" src="src/controller/orderController.js"></script>
+<script type="module" src="src/controller/saleController.js"></script>
 
 <!--<script type="module" src="/main.js"></script>-->
 </body>

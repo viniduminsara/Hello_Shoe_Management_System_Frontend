@@ -2,6 +2,8 @@ import {getAllCustomers} from "../api/Customer.js";
 import {showToast} from "../util/toast.js";
 import {getInventoryById} from "../api/Inventory.js";
 import Swal from "sweetalert2";
+import SaleModel from "../model/SaleModel.js";
+import {saveSale} from "../api/Sale.js";
 
 let currentInventory;
 
@@ -27,14 +29,7 @@ $('#order_item_search_btn').on('click', function (){
     let searchTerm = $('#order_item_search').val();
 
     if (!searchTerm){
-        new_cart_item_form.close();
-
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
-        })
+        showToast('info','Please enter item code!');
         return;
     }
 
@@ -62,30 +57,22 @@ $('#cart_add_btn').on('click', function (){
     let qty = parseInt($('#order_item_qty').val()) || 1;
 
     if (!currentInventory){
-        new_cart_item_form.close();
-
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
-        })
+        showToast('info','Please enter item code!');
         return;
     }
     if (!size){
-        new_cart_item_form.close();
+        showToast('info','Please select a size!');
+        return;
+    }
 
-        Swal.fire({
-            title: 'Error!',
-            text: 'Do you want to continue',
-            icon: 'error',
-            confirmButtonText: 'Cool'
-        })
+    const item = currentInventory.itemSizeDTOS.find(itemSize => itemSize.size === size);
+    if (item.qty < qty){
+        showToast('info','Not enough quantity!');
         return;
     }
 
     let itemFound = false;
-    $('#cart_table tr').each(function () {
+    $('#cart_table tbody tr').each(function () {
         let itemCode = $(this).find('th').first().text();
         let sizeCell = $(this).find('td').eq(1);
         if (itemCode === currentInventory.itemCode) {
@@ -137,9 +124,90 @@ $('#cart_add_btn').on('click', function (){
     clearCartForm();
 });
 
-$('#checkout_btn').on('click', function (){
+$('#checkout_btn_form').on('click', function (){
+    const customerId = $('#order_customer').val();
+    if (!customerId){
+        showToast('info','Please select customer!');
+        return;
+    }
 
+    if ($('#cart_table tbody tr').length < 1){
+        showToast('info','Please add cart items!');
+        return;
+    }
+
+    $('#total').text($('#total-amount').text())
+    checkout_form.showModal();
+});
+
+$('#payment_method').on('input', function (){
+    const paymentMethod = $('#payment_method').val();
+
+    if (paymentMethod === 'CASH'){
+        $('#cash_method').removeClass('hidden');
+        $('#card_method').addClass('hidden');
+    }else if (paymentMethod === 'CARD'){
+        $('#card_method').removeClass('hidden');
+        $('#cash_method').addClass('hidden');
+    }
+});
+
+$('#checkout_form_close').on('click', function (){
+    $('#payment_method').val('')
+    $('#cash_method').addClass('hidden');
+    $('#card_method').addClass('hidden');
+});
+
+$('#checkout_btn').on('click', function (){
+    const customerId = $('#order_customer').val();
+    const totalPrice = getTotal();
+    const purchaseDate = getCurrentTimestamp();
+    const paymentMethod = $('#payment_method').val();
+    const addedPoints = (totalPrice / 800) | 0;
+    const userId = 'U001';
+    const orderItems = [];
+
+    if (!paymentMethod){
+        $('#payment_method_error').text('Please select payment method');
+        return;
+    }
+
+    $('#cart_table tbody tr').each(function () {
+        let itemCode = $(this).find('th').first().text();
+        let size = parseInt($(this).find('td').eq(1).text());
+        let unitPrice = parseInt($(this).find('td').eq(3).text());
+        let qty = parseInt($(this).find('td').eq(2).text());
+
+        orderItems.push({
+            itemCode: itemCode,
+            size: size,
+            unitPrice: unitPrice,
+            itemQty: qty
+        })
+    })
+
+    console.log(orderItems)
+    console.log(purchaseDate)
+    console.log(addedPoints)
+
+    const sale = new SaleModel(customerId,totalPrice,purchaseDate,paymentMethod,addedPoints,userId,orderItems);
+
+    saveSale(sale,
+        function () {
+            showToast('success','Sale saved successfully!');
+            $('#cart_table tbody').empty();
+            $('#order_customer').val('');
+            updateTotal();
+            checkout_form.close();
+        },
+        function (error) {
+            console.error('Error saving sale:', error);
+            showToast('error','Error saving sale!');
+        }
+    )
 })
+
+
 
 function updateTotal() {
     let total = 0;
@@ -148,9 +216,32 @@ function updateTotal() {
         let qty = parseInt($(this).find('td').eq(2).text()); // Assuming the quantity is the third <td>
         let price = parseFloat($(this).find('td').eq(3).text()); // Assuming the price is the fourth <td>
         total += qty * price;
-        console.log(total)
     });
     $('#total-amount').text(`Rs. ${total.toFixed(2)}`);
+}
+
+function getCurrentTimestamp() {
+    const now = new Date();
+
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
+
+function getTotal() {
+    let finalTotal = 0;
+    $(document).find('#cart_table tbody tr').each(function () {
+
+        let qty = parseInt($(this).find('td').eq(2).text()); // Assuming the quantity is the third <td>
+        let price = parseFloat($(this).find('td').eq(3).text()); // Assuming the price is the fourth <td>
+        finalTotal += qty * price;
+    });
+    return finalTotal;
 }
 
 $('#new_cart_item_form_close').on('click', function (){
@@ -168,6 +259,5 @@ function clearCartForm(){
     $('#order_item_search').val('');
     $('#order_item_size').val('')
     $('#order_item_qty').val('')
-    new_cart_item_form.close();
 }
 

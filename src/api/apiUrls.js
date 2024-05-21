@@ -8,3 +8,5 @@ export const EMPLOYEE_URL = `${baseUrl}/employee`;
 export const SUPPLIER_URL = `${baseUrl}/supplier`;
 
 export const INVENTORY_URL = `${baseUrl}/inventory`
+
+export const SALE_URL = `${baseUrl}/sale`
