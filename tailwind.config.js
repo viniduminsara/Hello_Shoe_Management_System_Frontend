@@ -20,7 +20,9 @@ export default {
       'alert-success',
       'alert-warning',
       'alert-error',
-      'text-success'
+      'text-success',
+      'mask',
+      'mask-squircle'
   ]
 }
 
