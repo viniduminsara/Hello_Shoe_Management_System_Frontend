@@ -6,6 +6,9 @@ export function saveSale(sale, onSuccess, onError){
         url: SALE_URL,
         contentType: 'application/json',
         data: JSON.stringify(sale),
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
         success: function () {
             onSuccess();
         },

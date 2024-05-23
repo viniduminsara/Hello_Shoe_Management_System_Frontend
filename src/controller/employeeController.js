@@ -130,6 +130,10 @@ $('#employeeForm').submit(function (e) {
             errors.push('Please select gender');
             $('#employee_gender_error').text('Please select gender');
         }
+        if (!formData.get('accessRole')) {
+            errors.push('Please select access role');
+            $('#employee_accessRole_error').text('Please select access role');
+        }
         if (employeeFormBtn.text() === 'Save') {
             if (validator.isEmpty(formData.get('profilePicture').name)) {
                 errors.push('Please select a profile picture');

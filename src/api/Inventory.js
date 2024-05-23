@@ -7,6 +7,9 @@ export function saveInventory(formData, onSuccess, onError){
         data: formData,
         contentType: false,
         processData: false,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
         success: function () {
             onSuccess();
         },
@@ -20,6 +23,9 @@ export function getAllInventories(onSuccess, onError){
     $.ajax({
         type: 'GET',
         url: INVENTORY_URL,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
         success: function (inventories) {
             onSuccess(inventories);
         },
@@ -33,6 +39,9 @@ export function getInventoryById(inventoryId, onSuccess, onError){
     $.ajax({
         type: 'GET',
         url: `${INVENTORY_URL}/${inventoryId}`,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
         success: function (inventory) {
             onSuccess(inventory);
         },
@@ -49,6 +58,9 @@ export function updateInventory(inventoryId, formData, onSuccess, onError){
         data: formData,
         contentType: false,
         processData: false,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
         success: function () {
             onSuccess();
         },
@@ -62,6 +74,9 @@ export function deleteInventory(inventoryId, onSuccess, onError){
     $.ajax({
         type: 'DELETE',
         url: `${INVENTORY_URL}/${inventoryId}`,
+        headers: {
+            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+        },
         success: function () {
             onSuccess();
         },
