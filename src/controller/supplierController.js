@@ -13,7 +13,7 @@ const supplierCategory = $('#supplier_category');
 
 let currentSupplierId;
 
-function loadAllSuppliers(){
+export function loadAllSuppliers(){
     getAllSuppliers(
         function (suppliers){
             $('#supplier_table tbody').empty();
@@ -57,8 +57,6 @@ function loadAllSuppliers(){
         }
     )
 }
-
-loadAllSuppliers();
 
 $('#supplierSaveBtn').on('click', function (){
     let nameVal = supplierName.val().trim();

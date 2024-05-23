@@ -2,7 +2,7 @@ import {getAllInventories} from "../api/Inventory.js";
 import {showToast} from "../util/toast.js";
 
 
-function loadAllProducts(){
+export function loadAllProducts(){
     getAllInventories(
         function (inventories){
             inventories.forEach(inventory => {
@@ -45,5 +45,3 @@ function loadAllProducts(){
         }
     )
 }
-
-loadAllProducts();

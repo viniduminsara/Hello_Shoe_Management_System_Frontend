@@ -1,13 +1,12 @@
 import {getAllCustomers} from "../api/Customer.js";
 import {showToast} from "../util/toast.js";
 import {getInventoryById} from "../api/Inventory.js";
-import Swal from "sweetalert2";
 import SaleModel from "../model/SaleModel.js";
 import {saveSale} from "../api/Sale.js";
 
 let currentInventory;
 
-function loadCustomers(){
+export function loadSaleCustomers(){
     getAllCustomers(
         function (customers){
             customers.forEach(customer => {
@@ -23,8 +22,6 @@ function loadCustomers(){
     )
 }
 
-loadCustomers();
-
 $('#order_item_search_btn').on('click', function (){
     let searchTerm = $('#order_item_search').val();
 
@@ -36,6 +33,7 @@ $('#order_item_search_btn').on('click', function (){
     getInventoryById(searchTerm,
         function (inventory){
             currentInventory = inventory;
+            $('#add_cart_table tbody').empty();
             $('#add_cart_table tbody').append(
                 `<tr>
                     <th>${inventory.itemDesc}</th>
@@ -185,10 +183,6 @@ $('#checkout_btn').on('click', function (){
             itemQty: qty
         })
     })
-
-    console.log(orderItems)
-    console.log(purchaseDate)
-    console.log(addedPoints)
 
     const sale = new SaleModel(customerId,totalPrice,purchaseDate,paymentMethod,addedPoints,userId,orderItems);
 

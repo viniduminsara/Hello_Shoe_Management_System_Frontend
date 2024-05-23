@@ -173,9 +173,7 @@
                     </dialog>
                 </div>
 
-                <div id="products-container" class="flex flex-wrap gap-5 justify-center">
-
-                </div>
+                <div id="products-container" class="flex flex-wrap gap-5 justify-center">  </div>
 
             </section>
 
@@ -788,6 +786,14 @@
                                            class="input input-bordered w-full max-w-xs"/>
                                     <p class="text-error text-xs mt-2" id="employee_emergencyContact_error"></p>
                                 </div>
+                                <div>
+                                    <select id="employee_accessRole" class="select select-bordered w-full max-w-xs" name="accessRole">
+                                        <option disabled selected value="">Access Role</option>
+                                        <option value="ADMIN">Admin</option>
+                                        <option value="USER">User</option>
+                                    </select>
+                                    <p class="text-error text-xs mt-2" id="employee_accessRole_error"></p>
+                                </div>
                                 <div class="my-4">
                                     <h3 class="my-3">Joined Date</h3>
                                     <input id="employee_joinedDate" type="date" name="joinedDate"
@@ -854,8 +860,6 @@
                     </table>
                 </div>
             </section>
-
-            <div id="toast" class="hidden toast toast-end"></div>
 
         </main>
 
@@ -953,11 +957,85 @@
     </div>
 </div>
 
+<section id="login">
+    <div class="hero min-h-screen" style="background-image: url(https://images.unsplash.com/photo-1518002171953-a080ee817e1f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);">
+        <div class="hero-overlay bg-opacity-60"></div>
+        <div class="hero-content flex-col lg:flex-row-reverse">
+            <div class="text-center lg:text-left">
+                <h1 class="text-5xl font-bold">Welcome Back!</h1>
+                <p class="py-6">Welcome back to the shoe shop team! Please log in with your credentials to access the system and start your workday.</p>
+            </div>
+            <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                <div class="card-body">
+                    <div class="form-control">
+                        <label class="label">Email</label>
+                        <label class="input input-bordered flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
+                            <input type="text" id="login_email" class="grow" placeholder="Enter employee email"/>
+                        </label>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">Password</label>
+                        <label class="input input-bordered flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
+                            <input type="password" id="login_password" class="grow" placeholder="Enter password"/>
+                        </label>
+                        <label class="label">
+                            <a id="signup_link" class="label-text-alt link link-hover">Don't have an account? Signup</a>
+                        </label>
+                    </div>
+                    <div class="form-control mt-6">
+                        <button id="login_btn" class="btn btn-primary">Login</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="signup">
+    <div class="hero min-h-screen" style="background-image: url(https://images.unsplash.com/photo-1518002171953-a080ee817e1f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D);">
+        <div class="hero-overlay bg-opacity-60"></div>
+        <div class="hero-content">
+            <div class="text-center lg:text-left">
+                <h1 class="text-5xl font-bold">New Here!</h1>
+                <p class="py-6">We're excited to have you on board. To get started, please fill out this sign-up form with your employment details.</p>
+            </div>
+            <div class="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
+                <div class="card-body">
+                    <div class="form-control">
+                        <label class="label">Email</label>
+                        <label class="input input-bordered flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path d="M2.5 3A1.5 1.5 0 0 0 1 4.5v.793c.026.009.051.02.076.032L7.674 8.51c.206.1.446.1.652 0l6.598-3.185A.755.755 0 0 1 15 5.293V4.5A1.5 1.5 0 0 0 13.5 3h-11Z" /><path d="M15 6.954 8.978 9.86a2.25 2.25 0 0 1-1.956 0L1 6.954V11.5A1.5 1.5 0 0 0 2.5 13h11a1.5 1.5 0 0 0 1.5-1.5V6.954Z" /></svg>
+                            <input type="text" class="grow" id="signup_email" placeholder="Enter employee email"/>
+                        </label>
+                    </div>
+                    <div class="form-control">
+                        <label class="label">Password</label>
+                        <label class="input input-bordered flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="w-4 h-4 opacity-70"><path fill-rule="evenodd" d="M14 6a4 4 0 0 1-4.899 3.899l-1.955 1.955a.5.5 0 0 1-.353.146H5v1.5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1-.5-.5v-2.293a.5.5 0 0 1 .146-.353l3.955-3.955A4 4 0 1 1 14 6Zm-4-2a.75.75 0 0 0 0 1.5.5.5 0 0 1 .5.5.75.75 0 0 0 1.5 0 2 2 0 0 0-2-2Z" clip-rule="evenodd" /></svg>
+                            <input type="password" class="grow" id="signup_password" placeholder="Enter password"/>
+                        </label>
+                        <label class="label">
+                            <a id="login_link" class="label-text-alt link link-hover">Already signed? Login</a>
+                        </label>
+                    </div>
+                    <div class="form-control mt-6">
+                        <button id="signup_btn" class="btn btn-primary">Signup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="toast" class="hidden toast toast-end"></div>
+
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="node_modules/apexcharts/dist/apexcharts.js"></script>
 <script src="node_modules/sweetalert2/dist/sweetalert2.min.js"></script>
 
-<script src="src/controller/navigationController.js"></script>
+<script type="module" src="src/controller/navigationController.js"></script>
 <script src="src/controller/dashboardController.js"></script>
 <script type="module" src="src/controller/customerController.js"></script>
 <script type="module" src="src/controller/employeeController.js"></script>
@@ -965,6 +1043,7 @@
 <script type="module" src="src/controller/supplierController.js"></script>
 <script type="module" src="src/controller/saleController.js"></script>
 <script type="module" src="src/controller/productsController.js"></script>
+<script type="module" src="src/controller/authController.js"></script>
 
 <!--<script type="module" src="/main.js"></script>-->
 </body>

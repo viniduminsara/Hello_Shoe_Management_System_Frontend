@@ -20,7 +20,7 @@ const employeeFormBtn = $('#employeeSaveBtn');
 
 let currentEmployeeId;
 
-function loadAllEmployees() {
+export function loadAllEmployees() {
     getAllEmployees(
         function (employees) {
             $('#employee_table tbody').empty();
@@ -74,8 +74,6 @@ function loadAllEmployees() {
         }
     )
 }
-
-loadAllEmployees();
 
 $('#employeeForm').submit(function (e) {
         e.preventDefault();

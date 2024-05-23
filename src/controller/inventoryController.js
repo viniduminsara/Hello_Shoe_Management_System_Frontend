@@ -15,7 +15,7 @@ const inventoryBtn = $('#inventory_btn');
 
 let currentInventoryId;
 
-function loadAllInventories(){
+export function loadAllInventories(){
     getAllInventories(
         function (inventories){
             $('#inventory_table tbody').empty();
@@ -80,8 +80,6 @@ function loadAllInventories(){
         }
     )
 }
-
-loadAllInventories();
 
 $('#inventory_form').submit(function (e){
     e.preventDefault();
@@ -168,7 +166,7 @@ $('#inventory_form').submit(function (e){
         )
     }
 });
-function loadSuppliers(){
+export function loadInventorySuppliers(){
     getAllSuppliers(
         function (suppliers){
             suppliers.map((supplier) => {
@@ -183,8 +181,6 @@ function loadSuppliers(){
         }
     )
 }
-
-loadSuppliers();
 
 $(document).on('click', '.edit-inventory-btn', function () {
     const inventoryId = $(this).attr('data-inventory-id');

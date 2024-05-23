@@ -13,7 +13,7 @@ const customerFemale = $('#customer_female');
 
 let currentCustomerId;
 
-function loadAllCustomers() {
+export function loadAllCustomers() {
     getAllCustomers(
         function (customers) {
             $('#customer_table tbody').empty();
@@ -53,8 +53,6 @@ function loadAllCustomers() {
             showToast('error','Error loading customer!');
         })
 }
-
-loadAllCustomers();
 
 // Event delegation for dynamically added button
 $('#customerSaveBtn').on('click', function () {
