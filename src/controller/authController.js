@@ -1,5 +1,12 @@
 import {showToast} from "../util/toast.js";
 import {signin, signup} from "../api/Auth.js";
+import {loadAllCustomers} from "./customerController.js";
+import {loadAllEmployees} from "./employeeController.js";
+import {loadAllInventories, loadInventorySuppliers} from "./inventoryController.js";
+import {loadAllProducts} from "./productsController.js";
+import {loadSaleCustomers} from "./saleController.js";
+import {loadAllSuppliers} from "./supplierController.js";
+import {jwtDecode} from "jwt-decode";
 
 const login_email = $('#login_email');
 const login_password = $('#login_password');
@@ -32,9 +39,20 @@ $('#login_btn').on('click', function (){
             localStorage.setItem('accessToken', tokens[0]);
             localStorage.setItem('refreshToken', tokens[1]);
 
+            const decoded = jwtDecode(tokens[0]);
+            localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
+            localStorage.setItem('name', JSON.stringify(decoded.sub));
+
             $('#login').css('display','none');
             $('.drawer').removeClass('hidden');
             $('#dashboard').css('display', 'block');
+            loadAllCustomers();
+            loadAllEmployees();
+            loadAllInventories();
+            loadInventorySuppliers();
+            loadAllProducts();
+            loadSaleCustomers();
+            loadAllSuppliers();
         },
         function (err){
             if (err.status === 403) {
@@ -71,9 +89,20 @@ $('#signup_btn').on('click', function (){
             localStorage.setItem('accessToken', tokens[0]);
             localStorage.setItem('refreshToken', tokens[1]);
 
+            const decoded = jwtDecode(tokens[0]);
+            localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
+            localStorage.setItem('name', JSON.stringify(decoded.sub));
+
             $('#signup').css('display','none');
             $('.drawer').removeClass('hidden');
             $('#dashboard').css('display', 'block');
+            loadAllCustomers();
+            loadAllEmployees();
+            loadAllInventories();
+            loadInventorySuppliers();
+            loadAllProducts();
+            loadSaleCustomers();
+            loadAllSuppliers();
         },
         function (err){
             if (err.status === 403) {

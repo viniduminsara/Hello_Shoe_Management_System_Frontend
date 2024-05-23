@@ -1,4 +1,14 @@
-$(document).ready(function() {
+import {refresh} from "../api/Auth.js";
+import {showToast} from "../util/toast.js";
+import {loadAllCustomers} from "./customerController.js";
+import {loadAllEmployees} from "./employeeController.js";
+import {loadAllInventories, loadInventorySuppliers} from "./inventoryController.js";
+import {loadAllProducts} from "./productsController.js";
+import {loadSaleCustomers} from "./saleController.js";
+import {loadAllSuppliers} from "./supplierController.js";
+import {jwtDecode} from "jwt-decode";
+
+$(document).ready(async function () {
     const dashboard_section = $('#dashboard');
     const products_section = $('#products');
     const customer_section = $('#customer');
@@ -6,10 +16,12 @@ $(document).ready(function() {
     const employee_section = $('#employee');
     const inventory_section = $('#inventory');
     const supplier_section = $('#supplier');
+    const login_section = $('#login');
+    const signup_section = $('#signup');
 
     const sections = [
         dashboard_section, products_section, customer_section, order_section, employee_section, inventory_section,
-        supplier_section
+        supplier_section, login_section, signup_section
     ];
     const links = $('.menu a');
 
@@ -19,13 +31,72 @@ $(document).ready(function() {
         }
     }
 
-    function highlightLink(link){
+    function highlightLink(link) {
         links.removeClass('active-link');
         $(link).addClass('active-link');
     }
-    
+
     removeAllSections();
-    dashboard_section.css('display', 'block');
+
+    const accessToken = localStorage.getItem('accessToken');
+    const refreshToken = localStorage.getItem('refreshToken');
+
+    if (accessToken || refreshToken) {
+        if (isTokenExpired(accessToken)) {
+            console.log('Access Token is expired');
+            if (isTokenExpired(refreshToken)) {
+                console.log('Refresh Token is expired');
+
+                dashboard_section.css('display', 'none');
+                $('.drawer').addClass('hidden');
+                login_section.css('display', 'block');
+            } else {
+                console.log('Get new access token')
+
+                refresh(
+                    refreshToken,
+                    function (res) {
+                        const tokens = res.token.split(' : ');
+                        localStorage.setItem('accessToken', tokens[0]);
+                        localStorage.setItem('refreshToken', tokens[1]);
+                        const decoded = jwtDecode(tokens[0]);
+                        localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
+                        localStorage.setItem('name', JSON.stringify(decoded.sub));
+
+                        dashboard_section.css('display', 'block');
+                        loadAllCustomers();
+                        loadAllEmployees();
+                        loadAllInventories();
+                        loadInventorySuppliers();
+                        loadAllProducts();
+                        loadSaleCustomers();
+                        loadAllSuppliers();
+                    },
+                    function (err) {
+                        showToast('error', 'Please check your connection');
+                    }
+                )
+            }
+        } else {
+            console.log('Token is valid');
+            dashboard_section.css('display', 'block');
+            loadAllCustomers();
+            loadAllEmployees();
+            loadAllInventories();
+            loadInventorySuppliers();
+            loadAllProducts();
+            loadSaleCustomers();
+            loadAllSuppliers();
+        }
+    }else{
+        dashboard_section.css('display', 'none');
+        $('.drawer').addClass('hidden');
+        login_section.css('display', 'block');
+    }
+
+    // dashboard_section.css('display', 'none');
+    // $('.drawer').addClass('hidden');
+    // login_section.css('display', 'block');
 
     $('#dashboard_nav').on('click', () => {
         removeAllSections();
@@ -69,5 +140,35 @@ $(document).ready(function() {
         highlightLink('#supplier_nav');
     });
 });
+
+function isTokenExpired(token) {
+    const decoded = jwtDecode(token);
+    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+    return decoded.exp < currentTime;
+}
+
+// function parseJwt(token) {
+//     try {
+//         const base64Url = token.split('.')[1];
+//         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+//             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+//         }).join(''));
+//         return JSON.parse(jsonPayload);
+//     } catch (e) {
+//         return null;
+//     }
+// }
+//
+// function isTokenExpired(token) {
+//     const decoded = parseJwt(token);
+//     if (!decoded || !decoded.exp) {
+//         return true; // If token is invalid or no exp claim, consider it expired
+//     }
+//     const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+//     return decoded.exp < currentTime;
+// }
+
+
 
 
