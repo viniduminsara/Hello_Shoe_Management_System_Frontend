@@ -1,22 +1,33 @@
-import {getAllInventories} from "../api/Inventory.js";
+import {getAllInventories, getSortedInventories} from "../api/Inventory.js";
 import {showToast} from "../util/toast.js";
 
 
 export function loadAllProducts(){
     getAllInventories(
         function (inventories){
-            inventories.forEach(inventory => {
-                let badgeType;
-                if (inventory.status === 'Available'){
-                    badgeType = 'badge-success';
-                }else if (inventory.status === 'Low'){
-                    badgeType = 'badge-warning';
-                }else {
-                    badgeType = 'badge-error';
-                }
+            populateProducts(inventories);
+        },
+        function (err){
+            console.log('Error fetching products : '+ err);
+            showToast('error', 'Error fetching products');
+        }
+    )
+}
 
-                $('#products-container').append(
-                    `<div class="card w-80 bg-base-100 shadow-xl">
+function populateProducts(inventories){
+    $('#products-container').empty();
+    inventories.forEach(inventory => {
+        let badgeType;
+        if (inventory.status === 'Available'){
+            badgeType = 'badge-success';
+        }else if (inventory.status === 'Low'){
+            badgeType = 'badge-warning';
+        }else {
+            badgeType = 'badge-error';
+        }
+
+        $('#products-container').append(
+            `<div class="card w-80 bg-base-100 shadow-xl">
                         <figure><img src="data:image/jpeg;base64,${inventory.itemPic}"
                                      alt="Shoes"/></figure>
                         <div class="card-body">
@@ -36,12 +47,23 @@ export function loadAllProducts(){
                             </div>
                         </div>
                     </div>`
-                )
-            })
-        },
-        function (err){
-            console.log('Error fetching products : '+ err);
-            showToast('error', 'Error fetching products');
-        }
-    )
+        )
+    })
 }
+
+$('#sortBy').on('input', function (){
+    const sortBy = $('#sortBy').val();
+
+    if (sortBy){
+        getSortedInventories(
+            sortBy,
+            function (inventories){
+                populateProducts(inventories);
+            },
+            function (err){
+                console.log('Error fetching products : '+ err);
+                showToast('error', 'Error fetching products');
+            }
+        )
+    }
+});
