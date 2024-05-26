@@ -1,7 +1,12 @@
-export function loadChart(verityTypeQuantities) {
+export function loadDashboardData(data) {
+    $('#total_sales').text(data.totalSales);
+    $('#total_profit').text(data.totalProfit);
+    $('#most_sold_item').text(data.mostSaleItem)
+    $('#most_sold_item_pic').attr('src', `data:image/jpeg;base64,${data.mostSaleItemPic}`)
+
     const series = [];
     const labels = [];
-    for (const verityTypeQty of verityTypeQuantities){
+    for (const verityTypeQty of data.verityTypeQuantities){
         series.push(verityTypeQty.quantity);
         labels.push(verityTypeQty.verityType);
     }

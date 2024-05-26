@@ -8,7 +8,7 @@ import {loadSaleCustomers} from "./saleController.js";
 import {loadAllSuppliers} from "./supplierController.js";
 import {jwtDecode} from "jwt-decode";
 import {getAdminPanelData} from "../api/AdminPanel.js";
-import {loadChart} from "./dashboardController.js";
+import {loadDashboardData} from "./dashboardController.js";
 
 $(document).ready(async function () {
     const dashboard_section = $('#dashboard');
@@ -154,12 +154,7 @@ function isTokenExpired(token) {
 export function loadPanelData(){
     getAdminPanelData(
         function (data) {
-            console.log(data)
-            $('#total_sales').text(data.totalSales);
-            $('#total_profit').text(data.totalProfit);
-            $('#most_sold_item').text(data.mostSaleItem)
-            $('#most_sold_item_pic').attr('src', `data:image/jpeg;base64,${data.mostSaleItemPic}`)
-            loadChart(data.verityTypeQuantities);
+            loadDashboardData(data);
         },
         function (err) {
             console.log('Error fetching panel data : '+ err);
