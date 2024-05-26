@@ -7,6 +7,8 @@ import {loadAllProducts} from "./productsController.js";
 import {loadSaleCustomers} from "./saleController.js";
 import {loadAllSuppliers} from "./supplierController.js";
 import {jwtDecode} from "jwt-decode";
+import {getAdminPanelData} from "../api/AdminPanel.js";
+import {loadChart} from "./dashboardController.js";
 
 $(document).ready(async function () {
     const dashboard_section = $('#dashboard');
@@ -64,6 +66,7 @@ $(document).ready(async function () {
                         localStorage.setItem('name', JSON.stringify(decoded.sub));
 
                         dashboard_section.css('display', 'block');
+                        loadPanelData();
                         loadAllCustomers();
                         loadAllEmployees();
                         loadAllInventories();
@@ -80,6 +83,7 @@ $(document).ready(async function () {
         } else {
             console.log('Token is valid');
             dashboard_section.css('display', 'block');
+            loadPanelData();
             loadAllCustomers();
             loadAllEmployees();
             loadAllInventories();
@@ -147,27 +151,22 @@ function isTokenExpired(token) {
     return decoded.exp < currentTime;
 }
 
-// function parseJwt(token) {
-//     try {
-//         const base64Url = token.split('.')[1];
-//         const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-//         const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-//             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-//         }).join(''));
-//         return JSON.parse(jsonPayload);
-//     } catch (e) {
-//         return null;
-//     }
-// }
-//
-// function isTokenExpired(token) {
-//     const decoded = parseJwt(token);
-//     if (!decoded || !decoded.exp) {
-//         return true; // If token is invalid or no exp claim, consider it expired
-//     }
-//     const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-//     return decoded.exp < currentTime;
-// }
+export function loadPanelData(){
+    getAdminPanelData(
+        function (data) {
+            console.log(data)
+            $('#total_sales').text(data.totalSales);
+            $('#total_profit').text(data.totalProfit);
+            $('#most_sold_item').text(data.mostSaleItem)
+            $('#most_sold_item_pic').attr('src', `data:image/jpeg;base64,${data.mostSaleItemPic}`)
+            loadChart(data.verityTypeQuantities);
+        },
+        function (err) {
+            console.log('Error fetching panel data : '+ err);
+            showToast('error', 'Error fetching panel data');
+        }
+    )
+}
 
 
 
