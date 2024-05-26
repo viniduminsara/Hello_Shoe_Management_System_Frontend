@@ -1,6 +1,7 @@
 export function loadDashboardData(data) {
     $('#total_sales').text(data.totalSales);
     $('#total_profit').text(data.totalProfit);
+    $('#total_customers').text(data.totalCustomers);
     $('#most_sold_item').text(data.mostSaleItem)
     $('#most_sold_item_pic').attr('src', `data:image/jpeg;base64,${data.mostSaleItemPic}`)
 
