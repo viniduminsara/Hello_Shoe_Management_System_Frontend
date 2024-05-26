@@ -1,4 +1,5 @@
 import {SUPPLIER_URL} from "./apiUrls.js";
+import {getValidatedToken} from "../util/validateToken.js";
 
 export function saveSupplier(supplier, onSuccess, onError){
     $.ajax({
@@ -7,7 +8,7 @@ export function saveSupplier(supplier, onSuccess, onError){
         contentType: 'application/json',
         data: JSON.stringify(supplier),
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (res) {
             onSuccess();
@@ -23,7 +24,7 @@ export function getAllSuppliers(onSuccess, onError){
         type: 'GET',
         url: SUPPLIER_URL,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (suppliers){
             onSuccess(suppliers);
@@ -39,7 +40,7 @@ export function getSupplierById(supplierId, onSuccess, onError){
         type: 'GET',
         url: `${SUPPLIER_URL}/${supplierId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (supplier){
             onSuccess(supplier);
@@ -57,7 +58,7 @@ export function updateSupplier(supplierId, supplier, onSuccess, onError){
         contentType: 'application/json',
         data: JSON.stringify(supplier),
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
@@ -73,7 +74,7 @@ export function deleteSupplier(supplierId, onSuccess, onError){
         type: 'DELETE',
         url: `${SUPPLIER_URL}/${supplierId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();

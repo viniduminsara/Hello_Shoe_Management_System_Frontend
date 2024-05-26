@@ -1,11 +1,12 @@
-import {CUSTOMER_URL, PANEL_URL} from "./apiUrls.js";
+import {PANEL_URL} from "./apiUrls.js";
+import {getValidatedToken} from "../util/validateToken.js";
 
 export function getAdminPanelData(onSuccess, onError){
     $.ajax({
         type: 'GET',
         url: PANEL_URL,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (data){
             onSuccess(data);

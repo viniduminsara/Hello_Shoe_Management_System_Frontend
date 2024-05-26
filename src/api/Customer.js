@@ -1,4 +1,5 @@
 import {CUSTOMER_URL} from "./apiUrls.js";
+import {getValidatedToken} from "../util/validateToken.js";
 
 export function saveCustomer(customer, onSuccess, onError){
     $.ajax({
@@ -7,7 +8,7 @@ export function saveCustomer(customer, onSuccess, onError){
         contentType: 'application/json',
         data: JSON.stringify(customer),
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (res) {
             onSuccess();
@@ -23,7 +24,7 @@ export function getAllCustomers(onSuccess, onError){
         type: 'GET',
         url: CUSTOMER_URL,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (customers){
             onSuccess(customers);
@@ -39,7 +40,7 @@ export function getCustomerById(customerId, onSuccess, onError){
         type: 'GET',
         url: `${CUSTOMER_URL}/${customerId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (customer){
             onSuccess(customer);
@@ -55,7 +56,7 @@ export function updateCustomer(customerId, customer, onSuccess, onError){
         type: 'PUT',
         url: `${CUSTOMER_URL}/${customerId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         contentType: 'application/json',
         data: JSON.stringify(customer),
@@ -73,7 +74,7 @@ export function deleteCustomer(customerId, onSuccess, onError){
         type: 'DELETE',
         url: `${CUSTOMER_URL}/${customerId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (res) {
             onSuccess();

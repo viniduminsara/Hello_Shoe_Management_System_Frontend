@@ -9,6 +9,7 @@ import {loadAllSuppliers} from "./supplierController.js";
 import {jwtDecode} from "jwt-decode";
 import {getAdminPanelData} from "../api/AdminPanel.js";
 import {loadDashboardData} from "./dashboardController.js";
+import {isTokenExpired} from "../util/validateToken.js";
 
 $(document).ready(async function () {
     const dashboard_section = $('#dashboard');
@@ -76,6 +77,9 @@ $(document).ready(async function () {
                         loadAllSuppliers();
                     },
                     function (err) {
+                        dashboard_section.css('display', 'none');
+                        $('.drawer').addClass('hidden');
+                        login_section.css('display', 'block');
                         showToast('error', 'Please check your connection');
                     }
                 )
@@ -97,10 +101,6 @@ $(document).ready(async function () {
         $('.drawer').addClass('hidden');
         login_section.css('display', 'block');
     }
-
-    // dashboard_section.css('display', 'none');
-    // $('.drawer').addClass('hidden');
-    // login_section.css('display', 'block');
 
     $('#dashboard_nav').on('click', () => {
         removeAllSections();
@@ -144,12 +144,6 @@ $(document).ready(async function () {
         highlightLink('#supplier_nav');
     });
 });
-
-function isTokenExpired(token) {
-    const decoded = jwtDecode(token);
-    const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-    return decoded.exp < currentTime;
-}
 
 export function loadPanelData(){
     getAdminPanelData(

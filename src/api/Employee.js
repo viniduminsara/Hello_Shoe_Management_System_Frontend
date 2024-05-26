@@ -1,4 +1,5 @@
 import {EMPLOYEE_URL} from "./apiUrls.js";
+import {getValidatedToken} from "../util/validateToken.js";
 
 export function saveEmployee(formData, onSuccess, onError){
     $.ajax({
@@ -8,7 +9,7 @@ export function saveEmployee(formData, onSuccess, onError){
         contentType: false,
         processData: false,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
@@ -24,7 +25,7 @@ export function  getAllEmployees(onSuccess, onError){
         type: 'GET',
         url: EMPLOYEE_URL,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (employees) {
             onSuccess(employees);
@@ -40,7 +41,7 @@ export function getEmployeeById(employeeId, onSuccess, onError){
         type: 'GET',
         url: `${EMPLOYEE_URL}/${employeeId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (employee) {
             onSuccess(employee);
@@ -59,7 +60,7 @@ export function updateEmployee(employeeId, formData, onSuccess, onError){
         contentType: false,
         processData: false,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
@@ -75,7 +76,7 @@ export function deleteEmployee(employeeId, onSuccess, onError){
         type: 'DELETE',
         url: `${EMPLOYEE_URL}/${employeeId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();

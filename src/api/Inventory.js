@@ -1,4 +1,5 @@
 import {INVENTORY_URL} from "./apiUrls.js";
+import {getValidatedToken} from "../util/validateToken.js";
 
 export function saveInventory(formData, onSuccess, onError){
     $.ajax({
@@ -8,7 +9,7 @@ export function saveInventory(formData, onSuccess, onError){
         contentType: false,
         processData: false,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
@@ -24,7 +25,7 @@ export function getAllInventories(onSuccess, onError){
         type: 'GET',
         url: INVENTORY_URL,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (inventories) {
             onSuccess(inventories);
@@ -40,7 +41,7 @@ export function getInventoryById(inventoryId, onSuccess, onError){
         type: 'GET',
         url: `${INVENTORY_URL}/${inventoryId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (inventory) {
             onSuccess(inventory);
@@ -59,7 +60,7 @@ export function updateInventory(inventoryId, formData, onSuccess, onError){
         contentType: false,
         processData: false,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
@@ -75,7 +76,7 @@ export function deleteInventory(inventoryId, onSuccess, onError){
         type: 'DELETE',
         url: `${INVENTORY_URL}/${inventoryId}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
@@ -91,7 +92,7 @@ export function getSortedInventories(sortBy, onSuccess, onError){
         type: 'GET',
         url: `${INVENTORY_URL}/sort?sortBy=${sortBy}`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function (inventories) {
             onSuccess(inventories);

@@ -1,4 +1,5 @@
 import {SALE_URL} from "./apiUrls.js";
+import {getValidatedToken} from "../util/validateToken.js";
 
 export function saveSale(sale, onSuccess, onError){
     $.ajax({
@@ -7,7 +8,7 @@ export function saveSale(sale, onSuccess, onError){
         contentType: 'application/json',
         data: JSON.stringify(sale),
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+            'Authorization': `Bearer ${getValidatedToken()}`
         },
         success: function () {
             onSuccess();
