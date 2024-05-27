@@ -182,6 +182,7 @@ function loadNavigationData(){
     $('#nav_email').text(user.email);
     $('#nav_img_container').removeClass('hidden');
     $('#nav_img').attr('src', `data:image/jpeg;base64,${user.profilePic}`);
+    $('#greet_header').text(`Welcome Back ${user.name}`);
 }
 
 
