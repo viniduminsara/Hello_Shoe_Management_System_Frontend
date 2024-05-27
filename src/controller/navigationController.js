@@ -10,6 +10,7 @@ import {jwtDecode} from "jwt-decode";
 import {getAdminPanelData} from "../api/AdminPanel.js";
 import {loadDashboardData} from "./dashboardController.js";
 import {isTokenExpired} from "../util/validateToken.js";
+import {getEmployeeById} from "../api/Employee.js";
 
 $(document).ready(async function () {
     const dashboard_section = $('#dashboard');
@@ -63,17 +64,17 @@ $(document).ready(async function () {
                         localStorage.setItem('accessToken', tokens[0]);
                         localStorage.setItem('refreshToken', tokens[1]);
                         const decoded = jwtDecode(tokens[0]);
-                        localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
+                        getEmployeeData(decoded.employeeId);
 
                         dashboard_section.css('display', 'block');
-                        loadPanelData();
-                        loadAllCustomers();
-                        loadAllEmployees();
-                        loadAllInventories();
-                        loadInventorySuppliers();
-                        loadAllProducts();
-                        loadSaleCustomers();
-                        loadAllSuppliers();
+                        // loadPanelData();
+                        // loadAllCustomers();
+                        // loadAllEmployees();
+                        // loadAllInventories();
+                        // loadInventorySuppliers();
+                        // loadAllProducts();
+                        // loadSaleCustomers();
+                        // loadAllSuppliers();
                     },
                     function (err) {
                         dashboard_section.css('display', 'none');
@@ -85,15 +86,17 @@ $(document).ready(async function () {
             }
         } else {
             console.log('Token is valid');
+            const decoded = jwtDecode(localStorage.getItem('accessToken'));
+            getEmployeeData(decoded.employeeId);
             dashboard_section.css('display', 'block');
-            loadPanelData();
-            loadAllCustomers();
-            loadAllEmployees();
-            loadAllInventories();
-            loadInventorySuppliers();
-            loadAllProducts();
-            loadSaleCustomers();
-            loadAllSuppliers();
+            // loadPanelData();
+            // loadAllCustomers();
+            // loadAllEmployees();
+            // loadAllInventories();
+            // loadInventorySuppliers();
+            // loadAllProducts();
+            // loadSaleCustomers();
+            // loadAllSuppliers();
         }
     }else{
         dashboard_section.css('display', 'none');
@@ -154,6 +157,35 @@ export function loadPanelData(){
             showToast('error', 'Error fetching panel data');
         }
     )
+}
+
+export function getEmployeeData(employeeId) {
+    getEmployeeById(
+        employeeId,
+        function (employee){
+            localStorage.setItem('user', JSON.stringify(employee));
+            loadNavigationData();
+            loadPanelData();
+            loadAllCustomers();
+            loadAllEmployees();
+            loadAllInventories();
+            loadInventorySuppliers();
+            loadAllProducts();
+            loadSaleCustomers();
+            loadAllSuppliers();
+        },
+        function (err) {
+            console.error('Error fetching user data:', err);
+            showToast('error', 'Error fetching user data!');
+        }
+    )
+}
+
+function loadNavigationData(){
+    const user = JSON.parse(localStorage.getItem('user'));
+    $('#nav_username').text(user.name);
+    $('#nav_email').text(user.email);
+    $('#nav_img').attr('src', `data:image/jpeg;base64,${user.profilePic}`);
 }
 
 
