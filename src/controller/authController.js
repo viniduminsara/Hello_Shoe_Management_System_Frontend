@@ -1,11 +1,5 @@
 import {showToast} from "../util/toast.js";
 import {signin, signup} from "../api/Auth.js";
-import {loadAllCustomers} from "./customerController.js";
-import {loadAllEmployees} from "./employeeController.js";
-import {loadAllInventories, loadInventorySuppliers} from "./inventoryController.js";
-import {loadAllProducts} from "./productsController.js";
-import {loadSaleCustomers} from "./saleController.js";
-import {loadAllSuppliers} from "./supplierController.js";
 import {jwtDecode} from "jwt-decode";
 import {getEmployeeData} from "./navigationController.js";
 
@@ -46,13 +40,6 @@ $('#login_btn').on('click', function (){
             $('#login').css('display','none');
             $('.drawer').removeClass('hidden');
             $('#dashboard').css('display', 'block');
-            loadAllCustomers();
-            loadAllEmployees();
-            loadAllInventories();
-            loadInventorySuppliers();
-            loadAllProducts();
-            loadSaleCustomers();
-            loadAllSuppliers();
         },
         function (err){
             if (err.status === 403) {
@@ -95,13 +82,6 @@ $('#signup_btn').on('click', function (){
             $('#signup').css('display','none');
             $('.drawer').removeClass('hidden');
             $('#dashboard').css('display', 'block');
-            loadAllCustomers();
-            loadAllEmployees();
-            loadAllInventories();
-            loadInventorySuppliers();
-            loadAllProducts();
-            loadSaleCustomers();
-            loadAllSuppliers();
         },
         function (err){
             if (err.status === 403) {

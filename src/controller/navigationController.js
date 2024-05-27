@@ -67,14 +67,6 @@ $(document).ready(async function () {
                         getEmployeeData(decoded.employeeId);
 
                         dashboard_section.css('display', 'block');
-                        // loadPanelData();
-                        // loadAllCustomers();
-                        // loadAllEmployees();
-                        // loadAllInventories();
-                        // loadInventorySuppliers();
-                        // loadAllProducts();
-                        // loadSaleCustomers();
-                        // loadAllSuppliers();
                     },
                     function (err) {
                         dashboard_section.css('display', 'none');
@@ -89,14 +81,6 @@ $(document).ready(async function () {
             const decoded = jwtDecode(localStorage.getItem('accessToken'));
             getEmployeeData(decoded.employeeId);
             dashboard_section.css('display', 'block');
-            // loadPanelData();
-            // loadAllCustomers();
-            // loadAllEmployees();
-            // loadAllInventories();
-            // loadInventorySuppliers();
-            // loadAllProducts();
-            // loadSaleCustomers();
-            // loadAllSuppliers();
         }
     }else{
         dashboard_section.css('display', 'none');
@@ -147,6 +131,17 @@ $(document).ready(async function () {
     });
 });
 
+$('#logout_btn').on('click', function (){
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+
+    $('#nav_img_container').addClass('hidden');
+    $('#dashboard').css('display', 'none');
+    $('.drawer').addClass('hidden');
+    $('#login').css('display', 'block');
+});
+
 export function loadPanelData(){
     getAdminPanelData(
         function (data) {
@@ -185,6 +180,7 @@ function loadNavigationData(){
     const user = JSON.parse(localStorage.getItem('user'));
     $('#nav_username').text(user.name);
     $('#nav_email').text(user.email);
+    $('#nav_img_container').removeClass('hidden');
     $('#nav_img').attr('src', `data:image/jpeg;base64,${user.profilePic}`);
 }
 
