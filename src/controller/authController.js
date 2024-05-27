@@ -7,6 +7,7 @@ import {loadAllProducts} from "./productsController.js";
 import {loadSaleCustomers} from "./saleController.js";
 import {loadAllSuppliers} from "./supplierController.js";
 import {jwtDecode} from "jwt-decode";
+import {getEmployeeData} from "./navigationController.js";
 
 const login_email = $('#login_email');
 const login_password = $('#login_password');
@@ -40,8 +41,7 @@ $('#login_btn').on('click', function (){
             localStorage.setItem('refreshToken', tokens[1]);
 
             const decoded = jwtDecode(tokens[0]);
-            localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
-            localStorage.setItem('name', JSON.stringify(decoded.sub));
+            getEmployeeData(decoded.employeeId);
 
             $('#login').css('display','none');
             $('.drawer').removeClass('hidden');
@@ -90,8 +90,7 @@ $('#signup_btn').on('click', function (){
             localStorage.setItem('refreshToken', tokens[1]);
 
             const decoded = jwtDecode(tokens[0]);
-            localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
-            localStorage.setItem('name', JSON.stringify(decoded.sub));
+            getEmployeeData(decoded.employeeId);
 
             $('#signup').css('display','none');
             $('.drawer').removeClass('hidden');
