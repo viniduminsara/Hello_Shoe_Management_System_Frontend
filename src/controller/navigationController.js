@@ -64,7 +64,6 @@ $(document).ready(async function () {
                         localStorage.setItem('refreshToken', tokens[1]);
                         const decoded = jwtDecode(tokens[0]);
                         localStorage.setItem('role', JSON.stringify(decoded.role[0].authority));
-                        localStorage.setItem('name', JSON.stringify(decoded.sub));
 
                         dashboard_section.css('display', 'block');
                         loadPanelData();
