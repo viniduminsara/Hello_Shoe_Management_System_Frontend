@@ -119,3 +119,26 @@ export function deleteCustomer(customerId, onSuccess, onError){
         }
     );
 }
+
+export function getCustomerByContact(contact, onSuccess, onError){
+    getValidatedToken(
+        function (accessToken){
+            $.ajax({
+                type: 'GET',
+                url: `${CUSTOMER_URL}/contact?contact=${contact}`,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                success: function (customer){
+                    onSuccess(customer);
+                },
+                error: function (err){
+                    onError(err);
+                }
+            })
+        },
+        function (err){
+            console.error(err)
+        }
+    );
+}

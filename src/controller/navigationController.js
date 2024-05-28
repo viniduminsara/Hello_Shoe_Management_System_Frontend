@@ -4,7 +4,6 @@ import {loadAllCustomers} from "./customerController.js";
 import {loadAllEmployees} from "./employeeController.js";
 import {loadAllInventories, loadInventorySuppliers} from "./inventoryController.js";
 import {loadAllProducts} from "./productsController.js";
-import {loadSaleCustomers} from "./saleController.js";
 import {loadAllSuppliers} from "./supplierController.js";
 import {jwtDecode} from "jwt-decode";
 import {getAdminPanelData} from "../api/AdminPanel.js";
@@ -166,7 +165,6 @@ export function getEmployeeData(employeeId) {
             loadAllInventories();
             loadInventorySuppliers();
             loadAllProducts();
-            loadSaleCustomers();
             loadAllSuppliers();
         },
         function (err) {

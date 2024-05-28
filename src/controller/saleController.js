@@ -1,26 +1,13 @@
-import {getAllCustomers} from "../api/Customer.js";
+import {getAllCustomers, getCustomerByContact} from "../api/Customer.js";
 import {showToast} from "../util/toast.js";
 import {getInventoryById} from "../api/Inventory.js";
 import SaleModel from "../model/SaleModel.js";
 import {saveSale} from "../api/Sale.js";
+import validator from "validator/es";
+import {loadPanelData} from "./navigationController.js";
 
 let currentInventory;
-
-export function loadSaleCustomers(){
-    getAllCustomers(
-        function (customers){
-            customers.forEach(customer => {
-                $('#order_customer').append(
-                    `<option value="${customer.customerId}">${customer.name}</option>`
-                )
-            })
-        },
-        function (err){
-            console.error('Error loading customers:', err);
-            showToast('error','Error loading customers!');
-        }
-    )
-}
+let currentOrderCustomerId;
 
 $('#order_item_search_btn').on('click', function (){
     let searchTerm = $('#order_item_search').val();
@@ -48,6 +35,12 @@ $('#order_item_search_btn').on('click', function (){
             showToast('error','Error loading inventory!');
         }
     )
+});
+
+$('#order_item_search').on('keypress', function (e){
+    if (e.keyCode === 13) {
+        $('#order_item_search_btn').click();
+    }
 });
 
 $('#cart_add_btn').on('click', function (){
@@ -123,11 +116,6 @@ $('#cart_add_btn').on('click', function (){
 });
 
 $('#checkout_btn_form').on('click', function (){
-    const customerId = $('#order_customer').val();
-    if (!customerId){
-        showToast('info','Please select customer!');
-        return;
-    }
 
     if ($('#cart_table tbody tr').length < 1){
         showToast('info','Please add cart items!');
@@ -137,6 +125,28 @@ $('#checkout_btn_form').on('click', function (){
     $('#total').text($('#total-amount').text())
     checkout_form.showModal();
 });
+
+$('#order_customer').on('keypress', function (e){
+    if (e.keyCode === 13){
+        const contact = $('#order_customer').val();
+
+        if (!validator.isMobilePhone(contact, 'any', {strictMode: false})) {
+            showToast('info','Please enter customer contact!');
+            return;
+        }
+
+        getCustomerByContact(
+            contact,
+            function (customer) {
+                $('#order_customer_name').text(customer.name)
+                currentOrderCustomerId = customer.customerId;
+            },
+            function (err) {
+                showToast('info','Customer not found');
+            }
+        )
+    }
+})
 
 $('#payment_method').on('input', function (){
     const paymentMethod = $('#payment_method').val();
@@ -156,8 +166,14 @@ $('#checkout_form_close').on('click', function (){
     $('#card_method').addClass('hidden');
 });
 
+$('#payment_amount').on('input', function (){
+    let total = getTotal();
+    let payment = $('#payment_amount').val();
+    $('#balance_amount').val(payment - total);
+});
+
 $('#checkout_btn').on('click', function (){
-    const customerId = $('#order_customer').val();
+    const customerId = currentOrderCustomerId;
     const totalPrice = getTotal();
     const purchaseDate = getCurrentTimestamp();
     const paymentMethod = $('#payment_method').val();
@@ -193,6 +209,8 @@ $('#checkout_btn').on('click', function (){
             $('#cart_table tbody').empty();
             $('#order_customer').val('');
             updateTotal();
+            loadPanelData();
+            currentOrderCustomerId = null;
             checkout_form.close();
         },
         function (error) {
