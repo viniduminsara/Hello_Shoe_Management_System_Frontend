@@ -25,3 +25,26 @@ export function saveSale(sale, onSuccess, onError){
         }
     );
 }
+
+export function getAllOrders(onSuccess, onError){
+    getValidatedToken(
+        function (accessToken){
+            $.ajax({
+                type: 'GET',
+                url: SALE_URL,
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                },
+                success: function (orders){
+                    onSuccess(orders);
+                },
+                error: function (err){
+                    onError(err);
+                }
+            })
+        },
+        function (err){
+            console.error(err)
+        }
+    );
+}

@@ -10,6 +10,7 @@ import {getAdminPanelData} from "../api/AdminPanel.js";
 import {loadDashboardData} from "./dashboardController.js";
 import {isTokenExpired} from "../util/validateToken.js";
 import {getEmployeeById} from "../api/Employee.js";
+import {loadOrderList} from "./saleController.js";
 
 $(document).ready(async function () {
     const dashboard_section = $('#dashboard');
@@ -166,6 +167,7 @@ export function getEmployeeData(employeeId) {
             loadInventorySuppliers();
             loadAllProducts();
             loadAllSuppliers();
+            loadOrderList();
         },
         function (err) {
             console.error('Error fetching user data:', err);

@@ -2,12 +2,34 @@ import {getAllCustomers, getCustomerByContact} from "../api/Customer.js";
 import {showToast} from "../util/toast.js";
 import {getInventoryById} from "../api/Inventory.js";
 import SaleModel from "../model/SaleModel.js";
-import {saveSale} from "../api/Sale.js";
+import {getAllOrders, saveSale} from "../api/Sale.js";
 import validator from "validator/es";
 import {loadPanelData} from "./navigationController.js";
 
 let currentInventory;
 let currentOrderCustomerId;
+
+export function loadOrderList(){
+    getAllOrders(
+        function (orders) {
+            $('#order_table tbody').empty();
+            orders.forEach(order => {
+                $('#order_table tbody').append(
+                    `<tr>
+                        <th>${order.orderId}</th>
+                        <td>${order.date}</td>
+                        <td>${order.total}</td>
+                        <td>${order.paymentMethod}</td>
+                    </tr>`
+                )
+            })
+        },
+        function (err) {
+            console.error('Error loading orders:', err);
+            showToast('error','Error loading orders!');
+        }
+    )
+}
 
 $('#order_item_search_btn').on('click', function (){
     let searchTerm = $('#order_item_search').val();

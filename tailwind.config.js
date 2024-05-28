@@ -21,6 +21,7 @@ export default {
       'alert-warning',
       'alert-error',
       'text-success',
+      'gap-3',
       'mask',
       'mask-squircle'
   ]
