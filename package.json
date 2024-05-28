@@ -20,6 +20,7 @@
     "apexcharts": "^3.49.1",
     "jquery": "^3.7.1",
     "jwt-decode": "^4.0.0",
+    "k-convert": "^1.0.6",
     "validator": "^13.12.0"
   }
 }

@@ -1,7 +1,9 @@
+import kconvert from "k-convert";
+
 export function loadDashboardData(data) {
-    $('#total_sales').text(data.totalSales);
-    $('#total_profit').text(data.totalProfit);
-    $('#total_customers').text(data.totalCustomers);
+    $('#total_sales').text(kconvert.convertTo(data.totalSales));
+    $('#total_profit').text(kconvert.convertTo(data.totalProfit));
+    $('#total_customers').text(kconvert.convertTo(data.totalCustomers));
     $('#most_sold_item').text(data.mostSaleItem)
     $('#most_sold_item_pic').attr('src', `data:image/jpeg;base64,${data.mostSaleItemPic}`)
 
