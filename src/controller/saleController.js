@@ -162,7 +162,8 @@ $('#checkout_btn').on('click', function (){
     const purchaseDate = getCurrentTimestamp();
     const paymentMethod = $('#payment_method').val();
     const addedPoints = (totalPrice / 800) | 0;
-    const userId = '6ca26613-4f11-479f-9022-d713c5fe626e';
+    const user = JSON.parse(localStorage.getItem('user'));
+    const userId = user.employeeId;
     const orderItems = [];
 
     if (!paymentMethod){
