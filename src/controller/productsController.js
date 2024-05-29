@@ -1,4 +1,4 @@
-import {getAllInventories, getSortedInventories} from "../api/Inventory.js";
+import {getAllInventories, getInventoryById, getSortedInventories} from "../api/Inventory.js";
 import {showToast} from "../util/toast.js";
 
 
@@ -43,7 +43,7 @@ function populateProducts(inventories){
                                     <h1 class="text-2xl font-bold">Rs. ${inventory.sellingPrice}</h1>
                                     <h3 class="text-xs text-success">+ ${(inventory.profitMargin).toFixed(2)}%</h3>
                                 </div>
-                                <button class="btn btn-primary">Details</button>
+                                <button class="btn btn-primary details-btn" data-inventory-id="${inventory.itemCode}">Details</button>
                             </div>
                         </div>
                     </div>`
@@ -66,4 +66,44 @@ $('#sortBy').on('input', function (){
             }
         )
     }
+});
+
+$(document).on('click', '.details-btn', function (){
+    $('#products-container').addClass('hidden');
+    $('#products_header').addClass('hidden');
+    $('#products_view').removeClass('hidden');
+
+    let inventoryId = $(this).attr('data-inventory-id');
+
+    getInventoryById(
+        inventoryId,
+        function (inventory) {
+            $('#product_img').attr('src', `data:image/jpeg;base64,${inventory.itemPic}`);
+            $('#product_name').text(inventory.itemDesc);
+            $('#product_supplier').text(inventory.supplierName);
+            $('#product_price').text(`Rs. ${inventory.sellingPrice}`);
+            $('#product_profit').text(`+ ${inventory.profitMargin.toFixed(2)}%`);
+            $('#product_status').text(inventory.status);
+            $('#product_occasion').text(inventory.occasionType);
+            $('#product_verity').text(inventory.verityType);
+            $('#product_gender').text(inventory.gender);
+            let itemSizeDTOS = inventory.itemSizeDTOS;
+
+            itemSizeDTOS.forEach((item, index) => {
+                let sizeElement = $(`#product_size_${item.size}`);
+                sizeElement.text(item.qty);
+            });
+        },
+        function (err) {
+            if (err.status === 403) {
+                showToast('error', 'Inventory not found');
+            }
+        }
+    )
+});
+
+$('#products_back_btn').on('click', function (){
+    $('#products-container').removeClass('hidden');
+    $('#products_header').removeClass('hidden');
+    $('#products_view').addClass('hidden');
 });
