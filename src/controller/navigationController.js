@@ -22,10 +22,11 @@ $(document).ready(async function () {
     const supplier_section = $('#supplier');
     const login_section = $('#login');
     const signup_section = $('#signup');
+    const refund_section = $('#refund');
 
     const sections = [
         dashboard_section, products_section, customer_section, order_section, employee_section, inventory_section,
-        supplier_section, login_section, signup_section
+        supplier_section, login_section, signup_section, refund_section
     ];
     const links = $('.menu a');
 
@@ -128,6 +129,11 @@ $(document).ready(async function () {
         removeAllSections();
         $('#supplier').css('display', 'block');
         highlightLink('#supplier_nav');
+    });
+    $('#refund_nav').on('click', () => {
+        removeAllSections();
+        $('#refund').css('display', 'block');
+        highlightLink('#refund_nav');
     });
 });
 
