@@ -2,6 +2,7 @@ import validator from "validator/es";
 import SupplierModel from "../model/SupplierModel.js";
 import {deleteSupplier, getAllSuppliers, getSupplierById, saveSupplier, updateSupplier} from "../api/Supplier.js";
 import {showToast} from "../util/toast.js";
+import {loadInventorySuppliers} from "./inventoryController.js";
 
 
 const supplierName = $('#supplier_name');
@@ -115,6 +116,7 @@ $('#supplierSaveBtn').on('click', function (){
                 loadAllSuppliers();
                 showToast('success', 'Supplier saved successfully!');
                 clearSupplierInputs();
+                loadInventorySuppliers();
             },
             function (error) {
                 console.error('Error saving supplier:', error);
@@ -129,6 +131,7 @@ $('#supplierSaveBtn').on('click', function (){
                 new_supplier_form.close();
                 showToast('success','Supplier updated successfully!');
                 clearSupplierInputs();
+                loadInventorySuppliers();
             },
             function (error) {
                 console.error('Error updating supplier:', error);
@@ -182,6 +185,7 @@ $(document).on('click', '.delete-supplier-btn', function () {
         function (){
             loadAllSuppliers();
             showToast('success','Supplier deleted successfully!');
+            loadInventorySuppliers();
         },
         function (err){
             console.error('Error deleting supplier:', err);

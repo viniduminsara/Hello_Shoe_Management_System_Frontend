@@ -491,7 +491,9 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Contact</th>
-                            <th>Address</th>
+                            <th>Points</th>
+                            <th>Level</th>
+                            <th>Last Purchase Date</th>
                             <th>Joined Date</th>
                             <th></th>
                         </tr>
@@ -503,7 +505,9 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Contact</th>
-                            <th>Address</th>
+                            <th>Points</th>
+                            <th>Level</th>
+                            <th>Last Purchase Date</th>
                             <th>Joined Date</th>
                             <th></th>
                         </tr>
@@ -894,7 +898,7 @@
                                            class="input input-bordered w-full max-w-xs"/>
                                     <p class="text-error text-xs mt-2" id="employee_emergencyContact_error"></p>
                                 </div>
-                                <div>
+                                <div class="my-4">
                                     <select id="employee_accessRole" class="select select-bordered w-full max-w-xs"
                                             name="accessRole">
                                         <option disabled selected value="">Access Role</option>
@@ -902,6 +906,16 @@
                                         <option value="USER">User</option>
                                     </select>
                                     <p class="text-error text-xs mt-2" id="employee_accessRole_error"></p>
+                                </div>
+                                <div>
+                                    <select id="employee_branch" class="select select-bordered w-full max-w-xs"
+                                            name="branch">
+                                        <option disabled selected value="">Branch</option>
+                                        <option value="COLOMBO">Colombo</option>
+                                        <option value="KANDY">Kandy</option>
+                                        <option value="PANADURA">Panadura</option>
+                                    </select>
+                                    <p class="text-error text-xs mt-2" id="employee_branch_error"></p>
                                 </div>
                                 <div class="my-4">
                                     <h3 class="my-3">Joined Date</h3>
@@ -1176,6 +1190,5 @@
 <script type="module" src="src/controller/authController.js"></script>
 <script type="module" src="src/controller/refundController.js"></script>
 
-<!--<script type="module" src="/main.js"></script>-->
 </body>
 </html>

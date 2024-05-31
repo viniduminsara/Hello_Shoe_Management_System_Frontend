@@ -22,9 +22,9 @@ let currentEmployeeId;
 
 export function loadAllEmployees() {
     const user = JSON.parse(localStorage.getItem('user'));
-    if (user.accessRole === 'ADMIN'){
+    if (user.accessRole === 'ADMIN') {
         $('#add_employee_btn').removeClass('hidden');
-    }else {
+    } else {
         $('#add_employee_btn').addClass('hidden');
     }
 
@@ -109,7 +109,7 @@ $('#employeeForm').submit(function (e) {
             errors.push('Address must be between 5 and 100 characters');
             $('#employee_address_error').text('Address must be between 5 and 100 characters');
         }
-        if (!validator.isMobilePhone(formData.get('contact'), 'any', {strictMode: false})) {
+        if (!validator.isMobilePhone(formData.get('contact'), 'any', {strictMode: true})) {
             errors.push('Invalid contact number');
             $('#employee_contact_error').text('Invalid contact number');
         }
@@ -121,7 +121,7 @@ $('#employeeForm').submit(function (e) {
             errors.push('Please enter the guardian name');
             $('#employee_guardian_error').text('Please enter the guardian name');
         }
-        if (!validator.isMobilePhone(formData.get('emergencyContact'), 'any', {strictMode: false})) {
+        if (!validator.isMobilePhone(formData.get('emergencyContact'), 'any', {strictMode: true})) {
             errors.push('Invalid emergency contact number');
             $('#employee_emergencyContact_error').text('Invalid emergency contact number');
         }
@@ -136,6 +136,10 @@ $('#employeeForm').submit(function (e) {
         if (!formData.get('gender')) {
             errors.push('Please select gender');
             $('#employee_gender_error').text('Please select gender');
+        }
+        if (!formData.get('branch')) {
+            errors.push('Please select branch');
+            $('#employee_branch_error').text('Please select branch');
         }
         if (!formData.get('accessRole')) {
             errors.push('Please select access role');
@@ -159,8 +163,12 @@ $('#employeeForm').submit(function (e) {
                     showToast('success', 'Employee saved successfully!');
                 },
                 function (error) {
-                    console.error('Error saving employee:', error);
-                    showToast('error', 'Error saving employee!');
+                    if (error.status === 409) {
+                        showToast('error', 'Email already exists!');
+                    } else {
+                        console.error('Error saving employee:', error);
+                        showToast('error', 'Error saving employee!');
+                    }
                 }
             );
         } else if (employeeFormBtn.text() === 'Update') {
@@ -225,13 +233,13 @@ $(document).on('click', '.delete-employee-btn', function () {
     const employeeId = $(this).attr('data-employee-id');
 
     deleteEmployee(employeeId,
-        function (){
+        function () {
             loadAllEmployees();
-            showToast('success','Employee deleted successfully!');
+            showToast('success', 'Employee deleted successfully!');
         },
-        function (err){
+        function (err) {
             console.error('Error updating customer:', err);
-            showToast('error','Error deleting employee!');
+            showToast('error', 'Error deleting employee!');
         }
     )
 });

@@ -8,6 +8,7 @@ import {
     saveInventory,
     updateInventory
 } from "../api/Inventory.js";
+import {loadAllProducts} from "./productsController.js";
 
 const inventoryItemPic = $('#inventory_itemPic');
 const itemImage = $('#item_image');
@@ -153,6 +154,7 @@ $('#inventory_form').submit(function (e){
                 loadAllInventories();
                 $('#inventory_back_btn').click();
                 clearInventoryInputs();
+                loadAllProducts();
             },
             function (error) {
                 console.error('Error saving inventory:', error);
@@ -166,6 +168,7 @@ $('#inventory_form').submit(function (e){
                 loadAllInventories();
                 $('#inventory_back_btn').click();
                 clearInventoryInputs();
+                loadAllProducts();
             },
             function (err){
                 console.error('Error updating inventory:', err);
@@ -229,6 +232,7 @@ $(document).on('click', '.delete-inventory-btn', function () {
         function (){
             loadAllInventories();
             showToast('success','Inventory deleted successfully!');
+            loadAllProducts();
         },
         function (err){
             console.error('Error updating inventory:', err);

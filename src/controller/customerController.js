@@ -2,6 +2,7 @@ import validator from "validator/es";
 import CustomerModel from "../model/CustomerModel.js";
 import {deleteCustomer, getAllCustomers, getCustomerById, saveCustomer, updateCustomer} from "../api/Customer.js";
 import {showToast} from "../util/toast.js";
+import {loadPanelData} from "./navigationController.js";
 
 const customerName = $('#customer_name');
 const customerAddress = $('#customer_address');
@@ -20,15 +21,24 @@ export function loadAllCustomers() {
         function (customers) {
             $('#customer_table tbody').empty();
             customers.map((customer, index) => {
+                let lastSaleDate;
+                if(customer.lastSaleDate === null){
+                    lastSaleDate = 'Not purchased yet';
+                }else {
+                    lastSaleDate = customer.lastSaleDate.split('T')[0];
+                }
                 let rowHtml =
                     `<tr>
                             <th>${index + 1}</th>
                             <td>${customer.name}</td>
                             <td>${customer.email}</td>
                             <td>${customer.contact}</td>  
-                            <td>${customer.address}</td>  
+                            <td>${customer.totalPoints}</td>  
+                            <td>${customer.level}</td>  
+                            <td>${lastSaleDate}</td>  
                             <td>${customer.joinedDate}</td>  
                             <td class="flex justify-around">
+                            ${(user.accessRole === 'ADMIN') ? `
                                 <button class="btn btn-square btn-sm text-primary mr-2 edit-customer-btn"
                                         data-customer-id="${customer.customerId}">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -37,7 +47,6 @@ export function loadAllCustomers() {
                                               d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/>
                                     </svg>
                                 </button>
-                                ${(user.accessRole === 'ADMIN') ? `
                                 <button class="btn btn-square btn-sm text-primary delete-customer-btn"
                                         data-customer-id="${customer.customerId}">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -83,7 +92,7 @@ $('#customerSaveBtn').on('click', function () {
         errors.push('Address must be between 5 and 100 characters');
         $('#customer_address_error').text('Address must be between 5 and 100 characters');
     }
-    if (!validator.isMobilePhone(contactVal, 'any', {strictMode: false})) {
+    if (!validator.isMobilePhone(contactVal, 'any', {strictMode: true})) {
         errors.push('Invalid contact number');
         $('#customer_contact_error').text('Invalid contact number');
     }
@@ -108,10 +117,15 @@ $('#customerSaveBtn').on('click', function () {
                 loadAllCustomers();
                 new_customer_form.close();
                 showToast('success','Customer saved successfully!');
+                loadPanelData();
             },
             function (error) {
-                console.error('Error saving customer:', error);
-                showToast('error','Error saving customer!');
+                if (error.status === 409){
+                    showToast('error','Contact number already exists!');
+                }else {
+                    console.error('Error saving customer:', error);
+                    showToast('error', 'Error saving customer!');
+                }
             }
         );
     }else {
@@ -121,6 +135,7 @@ $('#customerSaveBtn').on('click', function () {
                 new_customer_form.close();
                 showToast('success','Customer updated successfully!');
                 clearCustomerInputs();
+                loadPanelData();
             },
             function (error) {
                 console.error('Error updating customer:', error);
@@ -173,6 +188,7 @@ $(document).on('click', '.delete-customer-btn', function () {
         function (){
             loadAllCustomers();
             showToast('success','Customer deleted successfully!');
+            loadPanelData();
         },
         function (err){
             console.error('Error deleting customer:', err);
